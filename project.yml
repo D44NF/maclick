@@ -1,0 +1,87 @@
+name: MacClick
+options:
+  bundleIdPrefix: com.daanfenske.maclick
+  deploymentTarget:
+    macOS: "12.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  MacClick:
+    type: application
+    platform: macOS
+    sources:
+      - App/Sources
+      - path: Shared/Sources
+        group: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick
+        CODE_SIGN_ENTITLEMENTS: App/Resources/MacClick.entitlements
+        ENABLE_HARDENED_RUNTIME: true
+        COMBINE_HIDPI_IMAGES: true
+    info:
+      path: App/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: MacClick
+        LSMinimumSystemVersion: "12.0"
+        LSApplicationCategoryType: public.app-category.utilities
+        NSHumanReadableCopyright: Copyright. All rights reserved.
+        LSUIElement: false
+    dependencies:
+      - target: MacClickFinderSync
+        embed: true
+        codeSign: true
+
+  MacClickFinderSync:
+    type: app-extension
+    platform: macOS
+    sources:
+      - FinderSync/Sources
+      - path: Shared/Sources
+        group: Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick.FinderSync
+        CODE_SIGN_ENTITLEMENTS: FinderSync/Resources/FinderSync.entitlements
+        ENABLE_HARDENED_RUNTIME: true
+        SKIP_INSTALL: true
+    info:
+      path: FinderSync/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: MacClick FinderSync
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.FinderSync
+          NSExtensionPrincipalClass: FinderSyncController
+
+  MacClickTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick.Tests
+        GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: MacClick
+
+schemes:
+  MacClick:
+    build:
+      targets:
+        MacClick: all
+        MacClickFinderSync: all
+        MacClickTests: all
+    test:
+      targets:
+        - MacClickTests
+    run:
+      config: Debug

@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
+		3B3A4855FC9566C42099C8E0 /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
+		4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */; };
+		7BA422986638354B027799AD /* FinderSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */; };
+		CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25CA29950F2FC3461118A6 /* MacClickApp.swift */; };
+		E4B5A1287CA1BCE7FAABFDDA /* MacClickFinderSync.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7F1391BEBA47A982EDEC21E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4069B7CB0A4822B0D9210CF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E94FF4983B35165F188B06F9;
+			remoteInfo = MacClick;
+		};
+		DB5ABAFDBF01D13AAD96AB22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4069B7CB0A4822B0D9210CF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA9BB74302DB587BC8F58DBD;
+			remoteInfo = MacClickFinderSync;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22D3A165589978052907ACCE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E4B5A1287CA1BCE7FAABFDDA /* MacClickFinderSync.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifierTests.swift; sourceTree = "<group>"; };
+		6F5F036A4E1C591F91A8FD94 /* MacClickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacClickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F25CA29950F2FC3461118A6 /* MacClickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacClickApp.swift; sourceTree = "<group>"; };
+		8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MacClickFinderSync.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifier.swift; sourceTree = "<group>"; };
+		B9AFD90F5DEE0EEE9812C4A4 /* MacClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSyncController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		09251AD789639EFCF38A9906 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */,
+			);
+			name = Sources;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		192235F8DD62FB2AC7088AF0 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		3C4CA09D31F5A8C8E6622C01 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		417573C45B5F2228F033D9E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B9AFD90F5DEE0EEE9812C4A4 /* MacClick.app */,
+				8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */,
+				6F5F036A4E1C591F91A8FD94 /* MacClickTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4E2619E8B67049DAD5E1A2FE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				924FACA2DAC7570409BF8A07 /* Sources */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		644E15E29BD5DCD5B49FBBD5 /* FinderSync */ = {
+			isa = PBXGroup;
+			children = (
+				192235F8DD62FB2AC7088AF0 /* Sources */,
+			);
+			path = FinderSync;
+			sourceTree = "<group>";
+		};
+		924FACA2DAC7570409BF8A07 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7F25CA29950F2FC3461118A6 /* MacClickApp.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CC26DB46493AD5E5598308F5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				09251AD789639EFCF38A9906 /* Sources */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		CFD133CA03877F98830ED9A3 = {
+			isa = PBXGroup;
+			children = (
+				4E2619E8B67049DAD5E1A2FE /* App */,
+				644E15E29BD5DCD5B49FBBD5 /* FinderSync */,
+				CC26DB46493AD5E5598308F5 /* Shared */,
+				3C4CA09D31F5A8C8E6622C01 /* Tests */,
+				417573C45B5F2228F033D9E0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E94FF4983B35165F188B06F9 /* MacClick */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA05A57A9F8B904BFE319904 /* Build configuration list for PBXNativeTarget "MacClick" */;
+			buildPhases = (
+				AA6BAA011D1DFC22B8B61471 /* Sources */,
+				22D3A165589978052907ACCE /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DC953400639742D28C6EDCB2 /* PBXTargetDependency */,
+			);
+			name = MacClick;
+			packageProductDependencies = (
+			);
+			productName = MacClick;
+			productReference = B9AFD90F5DEE0EEE9812C4A4 /* MacClick.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FA9BB74302DB587BC8F58DBD /* MacClickFinderSync */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E35FD6613B78B70D0AE19098 /* Build configuration list for PBXNativeTarget "MacClickFinderSync" */;
+			buildPhases = (
+				9F737BF3B264BE5153FA5116 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacClickFinderSync;
+			packageProductDependencies = (
+			);
+			productName = MacClickFinderSync;
+			productReference = 8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FEA529ADAE71ADA7D98CB5DD /* MacClickTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01CCBB03B7D71238544FEA37 /* Build configuration list for PBXNativeTarget "MacClickTests" */;
+			buildPhases = (
+				74A6B08E736E4A8A8751C1AE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				62974B453B55460DAEF5D4A8 /* PBXTargetDependency */,
+			);
+			name = MacClickTests;
+			packageProductDependencies = (
+			);
+			productName = MacClickTests;
+			productReference = 6F5F036A4E1C591F91A8FD94 /* MacClickTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F4069B7CB0A4822B0D9210CF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					E94FF4983B35165F188B06F9 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					FA9BB74302DB587BC8F58DBD = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					FEA529ADAE71ADA7D98CB5DD = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6BB73E42867D3A726C2D469F /* Build configuration list for PBXProject "MacClick" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CFD133CA03877F98830ED9A3;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 417573C45B5F2228F033D9E0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E94FF4983B35165F188B06F9 /* MacClick */,
+				FA9BB74302DB587BC8F58DBD /* MacClickFinderSync */,
+				FEA529ADAE71ADA7D98CB5DD /* MacClickTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		74A6B08E736E4A8A8751C1AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F737BF3B264BE5153FA5116 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B3A4855FC9566C42099C8E0 /* AppGroupIdentifier.swift in Sources */,
+				7BA422986638354B027799AD /* FinderSyncController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA6BAA011D1DFC22B8B61471 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */,
+				CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		62974B453B55460DAEF5D4A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E94FF4983B35165F188B06F9 /* MacClick */;
+			targetProxy = 7F1391BEBA47A982EDEC21E6 /* PBXContainerItemProxy */;
+		};
+		DC953400639742D28C6EDCB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA9BB74302DB587BC8F58DBD /* MacClickFinderSync */;
+			targetProxy = DB5ABAFDBF01D13AAD96AB22 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		280F906B1DFDC26972BE4F88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = FinderSync/Resources/FinderSync.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = FinderSync/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick.FinderSync;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4A25BCCFBA607D00DB4E7487 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Resources/MacClick.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		98926C88472495CF73727F9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		A10B55D059246E5597A4D25F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick.Tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacClick.app/Contents/MacOS/MacClick";
+			};
+			name = Debug;
+		};
+		B474CF4B3E8197A503759A0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/Resources/MacClick.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = App/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B56763AFBBE6FFA325247558 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		BC69095BC8B1687686959B5B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = FinderSync/Resources/FinderSync.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = FinderSync/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick.FinderSync;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		C18E4040005284C5566D77DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.daanfenske.maclick.Tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacClick.app/Contents/MacOS/MacClick";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		01CCBB03B7D71238544FEA37 /* Build configuration list for PBXNativeTarget "MacClickTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10B55D059246E5597A4D25F /* Debug */,
+				C18E4040005284C5566D77DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6BB73E42867D3A726C2D469F /* Build configuration list for PBXProject "MacClick" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B56763AFBBE6FFA325247558 /* Debug */,
+				98926C88472495CF73727F9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AA05A57A9F8B904BFE319904 /* Build configuration list for PBXNativeTarget "MacClick" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4A25BCCFBA607D00DB4E7487 /* Debug */,
+				B474CF4B3E8197A503759A0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E35FD6613B78B70D0AE19098 /* Build configuration list for PBXNativeTarget "MacClickFinderSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280F906B1DFDC26972BE4F88 /* Debug */,
+				BC69095BC8B1687686959B5B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F4069B7CB0A4822B0D9210CF /* Project object */;
+}
