@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CB5C41DEB8787276F352735 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0458C9C5E560D08555C51B /* ContentView.swift */; };
 		370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
 		3B3A4855FC9566C42099C8E0 /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
 		4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */; };
@@ -14,6 +15,7 @@
 		5D68BD912E108586E16B67A7 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		7BA422986638354B027799AD /* FinderSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */; };
 		B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D808938C9954FC9383D0B /* FeatureStore.swift */; };
+		C53402340D12AC896A776940 /* ExtensionSettingsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA36DBE7E937521D88BBCEF /* ExtensionSettingsFooter.swift */; };
 		CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25CA29950F2FC3461118A6 /* MacClickApp.swift */; };
 		D6368D649039E5818BED813F /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		E4B5A1287CA1BCE7FAABFDDA /* MacClickFinderSync.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -52,7 +54,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3D0458C9C5E560D08555C51B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifierTests.swift; sourceTree = "<group>"; };
+		4BA36DBE7E937521D88BBCEF /* ExtensionSettingsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsFooter.swift; sourceTree = "<group>"; };
 		6F5F036A4E1C591F91A8FD94 /* MacClickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacClickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F25CA29950F2FC3461118A6 /* MacClickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacClickApp.swift; sourceTree = "<group>"; };
 		830D808938C9954FC9383D0B /* FeatureStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStore.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 		924FACA2DAC7570409BF8A07 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3D0458C9C5E560D08555C51B /* ContentView.swift */,
+				4BA36DBE7E937521D88BBCEF /* ExtensionSettingsFooter.swift */,
 				7F25CA29950F2FC3461118A6 /* MacClickApp.swift */,
 			);
 			path = Sources;
@@ -273,6 +279,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */,
+				1CB5C41DEB8787276F352735 /* ContentView.swift in Sources */,
+				C53402340D12AC896A776940 /* ExtensionSettingsFooter.swift in Sources */,
 				5D68BD912E108586E16B67A7 /* Feature.swift in Sources */,
 				B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */,
 				CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */,
