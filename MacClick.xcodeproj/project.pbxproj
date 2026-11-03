@@ -14,12 +14,16 @@
 		47EBA4B17623E6A9FE0C510E /* FeatureStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F08976C98AD91790003243 /* FeatureStoreTests.swift */; };
 		5D68BD912E108586E16B67A7 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		7BA422986638354B027799AD /* FinderSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */; };
+		AF2723546CFE8334DEFB46F6 /* UniqueFileNamerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31702449896923270F8A48E0 /* UniqueFileNamerTests.swift */; };
 		B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D808938C9954FC9383D0B /* FeatureStore.swift */; };
 		C53402340D12AC896A776940 /* ExtensionSettingsFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA36DBE7E937521D88BBCEF /* ExtensionSettingsFooter.swift */; };
 		CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25CA29950F2FC3461118A6 /* MacClickApp.swift */; };
+		D40D10255BBE7C87C76490CC /* NewItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BA1EFC9C6BAADA95555A02 /* NewItemCreator.swift */; };
 		D6368D649039E5818BED813F /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		E4B5A1287CA1BCE7FAABFDDA /* MacClickFinderSync.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F457CC637ED13B51B635509D /* UniqueFileNamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D195DBF473F96B5CB744FA /* UniqueFileNamer.swift */; };
 		F73B2C123607C8402917E165 /* FeatureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D808938C9954FC9383D0B /* FeatureStore.swift */; };
+		FC83B8455BFFB57C55524067 /* UniqueFileNamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D195DBF473F96B5CB744FA /* UniqueFileNamer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		02D195DBF473F96B5CB744FA /* UniqueFileNamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueFileNamer.swift; sourceTree = "<group>"; };
+		31702449896923270F8A48E0 /* UniqueFileNamerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueFileNamerTests.swift; sourceTree = "<group>"; };
 		3D0458C9C5E560D08555C51B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifierTests.swift; sourceTree = "<group>"; };
 		4BA36DBE7E937521D88BBCEF /* ExtensionSettingsFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionSettingsFooter.swift; sourceTree = "<group>"; };
@@ -62,6 +68,7 @@
 		830D808938C9954FC9383D0B /* FeatureStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStore.swift; sourceTree = "<group>"; };
 		8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MacClickFinderSync.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifier.swift; sourceTree = "<group>"; };
+		95BA1EFC9C6BAADA95555A02 /* NewItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewItemCreator.swift; sourceTree = "<group>"; };
 		B9AFD90F5DEE0EEE9812C4A4 /* MacClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F08976C98AD91790003243 /* FeatureStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStoreTests.swift; sourceTree = "<group>"; };
 		C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSyncController.swift; sourceTree = "<group>"; };
@@ -75,6 +82,7 @@
 				8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */,
 				D86823D8C177902A5D5F972A /* Feature.swift */,
 				830D808938C9954FC9383D0B /* FeatureStore.swift */,
+				02D195DBF473F96B5CB744FA /* UniqueFileNamer.swift */,
 			);
 			name = Sources;
 			path = Sources;
@@ -84,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */,
+				95BA1EFC9C6BAADA95555A02 /* NewItemCreator.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -93,6 +102,7 @@
 			children = (
 				45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */,
 				C5F08976C98AD91790003243 /* FeatureStoreTests.swift */,
+				31702449896923270F8A48E0 /* UniqueFileNamerTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -260,6 +270,7 @@
 			files = (
 				4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */,
 				47EBA4B17623E6A9FE0C510E /* FeatureStoreTests.swift in Sources */,
+				AF2723546CFE8334DEFB46F6 /* UniqueFileNamerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,6 +282,8 @@
 				D6368D649039E5818BED813F /* Feature.swift in Sources */,
 				F73B2C123607C8402917E165 /* FeatureStore.swift in Sources */,
 				7BA422986638354B027799AD /* FinderSyncController.swift in Sources */,
+				D40D10255BBE7C87C76490CC /* NewItemCreator.swift in Sources */,
+				F457CC637ED13B51B635509D /* UniqueFileNamer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +297,7 @@
 				5D68BD912E108586E16B67A7 /* Feature.swift in Sources */,
 				B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */,
 				CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */,
+				FC83B8455BFFB57C55524067 /* UniqueFileNamer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
