@@ -22,6 +22,8 @@ final class FinderSyncController: FIFinderSync {
         switch menuKind {
         case .contextualMenuForContainer:
             return containerMenu()
+        case .contextualMenuForItems:
+            return itemsMenu()
         default:
             return nil
         }
@@ -33,7 +35,24 @@ final class FinderSyncController: FIFinderSync {
         if featureStore.isEnabled(.newTextFile) || featureStore.isEnabled(.newFolder) {
             items.append(newItemSubmenuItem())
         }
+        if featureStore.isEnabled(.copyPath) {
+            items.append(actionItem(title: "Copy Path", selector: #selector(copyPath)))
+        }
 
+        return menu(from: items)
+    }
+
+    private func itemsMenu() -> NSMenu? {
+        var items: [NSMenuItem] = []
+
+        if featureStore.isEnabled(.copyPath) {
+            items.append(actionItem(title: "Copy Path", selector: #selector(copyPath)))
+        }
+
+        return menu(from: items)
+    }
+
+    private func menu(from items: [NSMenuItem]) -> NSMenu? {
         guard !items.isEmpty else { return nil }
         let menu = NSMenu()
         items.forEach(menu.addItem)
@@ -68,6 +87,17 @@ final class FinderSyncController: FIFinderSync {
     @objc private func createNewFolder() {
         guard let directory = FIFinderSyncController.default().targetedURL() else { return }
         itemCreator.create(.folder, in: directory)
+    }
+
+    @objc private func copyPath() {
+        let controller = FIFinderSyncController.default()
+        let selection = controller.selectedItemURLs() ?? []
+        let targets = selection.isEmpty ? [controller.targetedURL()].compactMap { $0 } : selection
+        guard !targets.isEmpty else { return }
+
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(ClipboardPathFormatter().pathsText(for: targets), forType: .string)
     }
 
     /// Watching the user's home directory covers Desktop, Documents,
