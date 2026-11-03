@@ -62,6 +62,14 @@ final class FinderSyncController: FIFinderSync {
             items.append(actionItem(title: "Extract ZIP", selector: #selector(extractZip)))
         }
 
+        let isSingleFile = selection.count == 1 && !selection[0].hasDirectoryPath
+        if featureStore.isEnabled(.copySHA256Checksum), isSingleFile {
+            items.append(actionItem(title: "Copy SHA-256 Checksum", selector: #selector(copySHA256Checksum)))
+        }
+        if featureStore.isEnabled(.copyMD5Checksum), isSingleFile {
+            items.append(actionItem(title: "Copy MD5 Checksum", selector: #selector(copyMD5Checksum)))
+        }
+
         return menu(from: items)
     }
 
@@ -142,6 +150,35 @@ final class FinderSyncController: FIFinderSync {
             NSWorkspace.shared.activateFileViewerSelecting([extracted])
         } catch {
             NSAlert(error: error).runModal()
+        }
+    }
+
+    @objc private func copySHA256Checksum() {
+        copyChecksum(using: .sha256)
+    }
+
+    @objc private func copyMD5Checksum() {
+        copyChecksum(using: .md5)
+    }
+
+    /// Hashing can take a while for large files, so it runs off the main
+    /// thread; the clipboard is simply updated whenever it finishes.
+    private func copyChecksum(using algorithm: ChecksumCalculator.Algorithm) {
+        guard let fileURL = FIFinderSyncController.default().selectedItemURLs()?.first else { return }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let digest = try ChecksumCalculator().hexDigest(for: fileURL, using: algorithm)
+                DispatchQueue.main.async {
+                    let pasteboard = NSPasteboard.general
+                    pasteboard.clearContents()
+                    pasteboard.setString(digest, forType: .string)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    NSAlert(error: error).runModal()
+                }
+            }
         }
     }
 
