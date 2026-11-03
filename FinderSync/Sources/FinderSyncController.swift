@@ -1,24 +1,39 @@
 import Cocoa
 import FinderSync
+import os
 
 /// Entry point for the Finder Sync extension. Builds Finder's contextual
 /// menu from whichever features are currently enabled in ``FeatureStore``.
+///
+/// Currently inert on macOS 26/27: the system's `FinderSyncExtensionHost`
+/// process, which is supposed to call `beginObservingDirectory`/
+/// `menu(for:)`, never starts — a confirmed Apple platform bug affecting
+/// every Finder Sync extension, not just this one (see README). The
+/// working equivalent today is `ServicesProvider`, reachable from
+/// Finder's Services submenu. This class is left in place, unchanged and
+/// ready, for when Apple fixes it.
 @objc(FinderSyncController)
 final class FinderSyncController: FIFinderSync {
 
     private let featureStore = FeatureStore.shared
     private let itemCreator = NewItemCreator()
+    private let logger = Logger(subsystem: "com.daanfenske.maclick.FinderSync", category: "menu")
 
     override init() {
         super.init()
-        FIFinderSyncController.default().directoryURLs = Self.observedDirectories()
+        let directories = Self.observedDirectories()
+        FIFinderSyncController.default().directoryURLs = directories
+        logger.notice("Observing directories: \(directories)")
     }
 
-    override func beginObservingDirectory(at url: URL) {}
+    override func beginObservingDirectory(at url: URL) {
+        logger.notice("beginObservingDirectory: \(url.path)")
+    }
 
     override func endObservingDirectory(at url: URL) {}
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
+        logger.notice("menu(for:) called with kind \(menuKind.rawValue)")
         switch menuKind {
         case .contextualMenuForContainer:
             return containerMenu()
