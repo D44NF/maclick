@@ -30,6 +30,17 @@ final class FeatureStoreTests: XCTestCase {
         store.setEnabled(false, for: .copyPath)
         XCTAssertTrue(store.isEnabled(.newTextFile))
     }
+
+    func testDefaultOrderMatchesCatalogOrder() {
+        XCTAssertEqual(store.orderedFeatures().map(\.id), Feature.all.map(\.id))
+    }
+
+    func testSetOrderPersistsAndIsReturnedInThatOrder() {
+        let customOrder = Array(Feature.all.reversed())
+        store.setOrder(customOrder)
+
+        XCTAssertEqual(store.orderedFeatures().map(\.id), customOrder.map(\.id))
+    }
 }
 
 final class FeatureCatalogTests: XCTestCase {

@@ -22,6 +22,21 @@ final class FeatureStore {
         defaults.set(enabled, forKey: key(for: feature))
     }
 
+    /// Features in the user's chosen display/menu order. Anything not yet
+    /// ordered (new features) is appended at the end in catalog order.
+    func orderedFeatures() -> [Feature] {
+        var remaining = Dictionary(uniqueKeysWithValues: Feature.all.map { ($0.id, $0) })
+        let saved = defaults.stringArray(forKey: orderKey) ?? []
+        let ordered = saved.compactMap { remaining.removeValue(forKey: $0) }
+        return ordered + Feature.all.filter { remaining[$0.id] != nil }
+    }
+
+    func setOrder(_ features: [Feature]) {
+        defaults.set(features.map(\.id), forKey: orderKey)
+    }
+
+    private let orderKey = "featureOrder"
+
     private func key(for feature: Feature) -> String {
         "feature.\(feature.id).enabled"
     }

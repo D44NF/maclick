@@ -21,7 +21,20 @@ struct ZipArchiver {
     func compress(_ items: [URL], into directory: URL) throws -> URL {
         let name = items.count == 1 ? "\(items[0].lastPathComponent).zip" : "Archive.zip"
         let destination = namer.uniqueURL(forBaseName: name, in: directory)
-        try run(arguments: ["-c", "-k", "--sequesterRsrc", "--keepParent"] + items.map(\.path) + [destination.path])
+
+        var arguments = ["-c", "-k", "--sequesterRsrc"]
+        // --keepParent wraps the archive in the item's own name for a
+        // folder, but in its *containing* folder's name for a loose file
+        // — only correct when every item is a folder.
+        // shortcut: a mixed files+folders selection still flattens a
+        // folder's contents to the zip root; fix with staged symlinks
+        // if that case turns out to matter in practice.
+        if items.allSatisfy(\.hasDirectoryPath) {
+            arguments.append("--keepParent")
+        }
+        arguments += items.map(\.path) + [destination.path]
+
+        try run(arguments: arguments)
         return destination
     }
 

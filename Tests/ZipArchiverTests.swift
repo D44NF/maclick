@@ -28,6 +28,18 @@ final class ZipArchiverTests: XCTestCase {
         XCTAssertEqual(try String(contentsOf: extractedFile, encoding: .utf8), "hello")
     }
 
+    func testCompressingAFolderKeepsItsOwnNameInsideTheArchive() throws {
+        let folder = directory.appendingPathComponent("MyFolder", isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        try "x".write(to: folder.appendingPathComponent("inside.txt"), atomically: true, encoding: .utf8)
+
+        let archive = try archiver.compress([folder], into: directory)
+        let extractedFolder = try archiver.extract(archive, into: directory)
+
+        let nested = extractedFolder.appendingPathComponent("MyFolder/inside.txt")
+        XCTAssertEqual(try String(contentsOf: nested, encoding: .utf8), "x")
+    }
+
     func testExtractDoesNotOverwriteAnExistingFolder() throws {
         let original = directory.appendingPathComponent("Notes.txt")
         try "hello".write(to: original, atomically: true, encoding: .utf8)
