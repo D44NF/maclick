@@ -38,15 +38,22 @@ final class FinderSyncController: FIFinderSync {
         if featureStore.isEnabled(.copyPath) {
             items.append(actionItem(title: "Copy Path", selector: #selector(copyPath)))
         }
+        if featureStore.isEnabled(.openTerminalHere) {
+            items.append(actionItem(title: "Open Terminal Here", selector: #selector(openTerminalHere)))
+        }
 
         return menu(from: items)
     }
 
     private func itemsMenu() -> NSMenu? {
+        let selection = FIFinderSyncController.default().selectedItemURLs() ?? []
         var items: [NSMenuItem] = []
 
         if featureStore.isEnabled(.copyPath) {
             items.append(actionItem(title: "Copy Path", selector: #selector(copyPath)))
+        }
+        if featureStore.isEnabled(.openTerminalHere), selection.count == 1, selection[0].hasDirectoryPath {
+            items.append(actionItem(title: "Open Terminal Here", selector: #selector(openTerminalHere)))
         }
 
         return menu(from: items)
@@ -98,6 +105,15 @@ final class FinderSyncController: FIFinderSync {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(ClipboardPathFormatter().pathsText(for: targets), forType: .string)
+    }
+
+    @objc private func openTerminalHere() {
+        let controller = FIFinderSyncController.default()
+        let selection = controller.selectedItemURLs() ?? []
+        guard let directory = selection.first(where: \.hasDirectoryPath) ?? controller.targetedURL(),
+              let terminalURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Terminal") else { return }
+
+        NSWorkspace.shared.open([directory], withApplicationAt: terminalURL, configuration: NSWorkspace.OpenConfiguration())
     }
 
     /// Watching the user's home directory covers Desktop, Documents,
