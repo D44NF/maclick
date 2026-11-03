@@ -41,6 +41,9 @@ final class FinderSyncController: FIFinderSync {
         if featureStore.isEnabled(.openTerminalHere) {
             items.append(actionItem(title: "Open Terminal Here", selector: #selector(openTerminalHere)))
         }
+        if featureStore.isEnabled(.openInVSCode) {
+            items.append(actionItem(title: "Open in Visual Studio Code", selector: #selector(openInVSCode)))
+        }
 
         return menu(from: items)
     }
@@ -57,6 +60,9 @@ final class FinderSyncController: FIFinderSync {
         }
         if featureStore.isEnabled(.compressToZip), !selection.isEmpty {
             items.append(actionItem(title: "Compress to ZIP", selector: #selector(compressToZip)))
+        }
+        if featureStore.isEnabled(.openInVSCode), !selection.isEmpty {
+            items.append(actionItem(title: "Open in Visual Studio Code", selector: #selector(openInVSCode)))
         }
         if featureStore.isEnabled(.extractZip), selection.count == 1, selection[0].pathExtension.lowercased() == "zip" {
             items.append(actionItem(title: "Extract ZIP", selector: #selector(extractZip)))
@@ -128,6 +134,23 @@ final class FinderSyncController: FIFinderSync {
               let terminalURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Terminal") else { return }
 
         NSWorkspace.shared.open([directory], withApplicationAt: terminalURL, configuration: NSWorkspace.OpenConfiguration())
+    }
+
+    @objc private func openInVSCode() {
+        let controller = FIFinderSyncController.default()
+        let selection = controller.selectedItemURLs() ?? []
+        let targets = selection.isEmpty ? [controller.targetedURL()].compactMap { $0 } : selection
+        guard !targets.isEmpty else { return }
+
+        guard let vsCodeURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.microsoft.VSCode") else {
+            let alert = NSAlert()
+            alert.messageText = "Visual Studio Code Not Found"
+            alert.informativeText = "Install Visual Studio Code to use this action."
+            alert.runModal()
+            return
+        }
+
+        NSWorkspace.shared.open(targets, withApplicationAt: vsCodeURL, configuration: NSWorkspace.OpenConfiguration())
     }
 
     @objc private func compressToZip() {
