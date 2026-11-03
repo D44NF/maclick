@@ -55,6 +55,12 @@ final class FinderSyncController: FIFinderSync {
         if featureStore.isEnabled(.openTerminalHere), selection.count == 1, selection[0].hasDirectoryPath {
             items.append(actionItem(title: "Open Terminal Here", selector: #selector(openTerminalHere)))
         }
+        if featureStore.isEnabled(.compressToZip), !selection.isEmpty {
+            items.append(actionItem(title: "Compress to ZIP", selector: #selector(compressToZip)))
+        }
+        if featureStore.isEnabled(.extractZip), selection.count == 1, selection[0].pathExtension.lowercased() == "zip" {
+            items.append(actionItem(title: "Extract ZIP", selector: #selector(extractZip)))
+        }
 
         return menu(from: items)
     }
@@ -114,6 +120,29 @@ final class FinderSyncController: FIFinderSync {
               let terminalURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Terminal") else { return }
 
         NSWorkspace.shared.open([directory], withApplicationAt: terminalURL, configuration: NSWorkspace.OpenConfiguration())
+    }
+
+    @objc private func compressToZip() {
+        let selection = FIFinderSyncController.default().selectedItemURLs() ?? []
+        guard let directory = selection.first?.deletingLastPathComponent() else { return }
+
+        do {
+            let archive = try ZipArchiver().compress(selection, into: directory)
+            NSWorkspace.shared.activateFileViewerSelecting([archive])
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    @objc private func extractZip() {
+        guard let archive = FIFinderSyncController.default().selectedItemURLs()?.first else { return }
+
+        do {
+            let extracted = try ZipArchiver().extract(archive, into: archive.deletingLastPathComponent())
+            NSWorkspace.shared.activateFileViewerSelecting([extracted])
+        } catch {
+            NSAlert(error: error).runModal()
+        }
     }
 
     /// Watching the user's home directory covers Desktop, Documents,
