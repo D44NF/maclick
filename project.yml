@@ -41,6 +41,61 @@ targets:
         LSApplicationCategoryType: public.app-category.utilities
         NSHumanReadableCopyright: Copyright. All rights reserved.
         LSUIElement: false
+        NSAppleEventsUsageDescription: MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.
+        NSServices:
+          - NSMenuItem:
+              default: Copy Path
+            NSMessage: copyPathService
+            NSSendTypes: [NSFilenamesPboardType]
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: Copy SHA-256 Checksum
+            NSMessage: copySHA256ChecksumService
+            NSSendTypes: [NSFilenamesPboardType]
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: Copy MD5 Checksum
+            NSMessage: copyMD5ChecksumService
+            NSSendTypes: [NSFilenamesPboardType]
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: Compress to ZIP
+            NSMessage: compressToZipService
+            NSSendTypes: [NSFilenamesPboardType]
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: Extract ZIP
+            NSMessage: extractZipService
+            NSSendTypes: [NSFilenamesPboardType]
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          # No NSSendTypes below: these also need to appear with nothing
+          # selected (an empty-space right-click), so they fall back to
+          # asking Finder for its frontmost window's folder.
+          - NSMenuItem:
+              default: Open Terminal Here
+            NSMessage: openTerminalHereService
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: Open in Visual Studio Code
+            NSMessage: openInVSCodeService
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: New Text File Here
+            NSMessage: newTextFileService
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
+          - NSMenuItem:
+              default: New Folder Here
+            NSMessage: newFolderService
+            NSRequiredContext:
+              NSApplicationIdentifier: com.apple.finder
     dependencies:
       - target: MacClickFinderSync
         embed: true
