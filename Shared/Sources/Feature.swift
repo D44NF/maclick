@@ -6,7 +6,7 @@ struct Feature: Identifiable, Hashable {
         case newItem = "New"
         case clipboard = "Clipboard"
         case archive = "Archive"
-        case shell = "Shell"
+        case developer = "Developer"
 
         var id: String { rawValue }
     }
@@ -77,10 +77,18 @@ extension Feature {
 
     static let openTerminalHere = Feature(
         id: "openTerminalHere",
-        category: .shell,
+        category: .developer,
         title: "Open Terminal Here",
         subtitle: "Open Terminal in the selected folder.",
         symbolName: "terminal"
+    )
+
+    static let openInVSCode = Feature(
+        id: "openInVSCode",
+        category: .developer,
+        title: "Open in Visual Studio Code",
+        subtitle: "Open the selection, or the current folder, in VS Code.",
+        symbolName: "chevron.left.forwardslash.chevron.right"
     )
 
     /// Every feature MacClick currently offers, in display order.
@@ -88,6 +96,6 @@ extension Feature {
         newTextFile, newFolder,
         copyPath, copySHA256Checksum, copyMD5Checksum,
         compressToZip, extractZip,
-        openTerminalHere
+        openTerminalHere, openInVSCode
     ]
 }

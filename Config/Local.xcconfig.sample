@@ -1,0 +1,8 @@
+// Copy this file to Local.xcconfig (gitignored) and fill in your own
+// Apple Developer Team ID. Find it in Xcode > Settings > Accounts >
+// select your Apple ID > double-click your team name.
+//
+// Needed because the App Group entitlement requires a signed-in team,
+// and this keeps your personal team ID out of the public repo while
+// still surviving `xcodegen generate`.
+DEVELOPMENT_TEAM =
