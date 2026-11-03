@@ -10,9 +10,14 @@
 		370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
 		3B3A4855FC9566C42099C8E0 /* AppGroupIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */; };
 		4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */; };
+		47EBA4B17623E6A9FE0C510E /* FeatureStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F08976C98AD91790003243 /* FeatureStoreTests.swift */; };
+		5D68BD912E108586E16B67A7 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		7BA422986638354B027799AD /* FinderSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */; };
+		B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D808938C9954FC9383D0B /* FeatureStore.swift */; };
 		CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25CA29950F2FC3461118A6 /* MacClickApp.swift */; };
+		D6368D649039E5818BED813F /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86823D8C177902A5D5F972A /* Feature.swift */; };
 		E4B5A1287CA1BCE7FAABFDDA /* MacClickFinderSync.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F73B2C123607C8402917E165 /* FeatureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830D808938C9954FC9383D0B /* FeatureStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,10 +55,13 @@
 		45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifierTests.swift; sourceTree = "<group>"; };
 		6F5F036A4E1C591F91A8FD94 /* MacClickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacClickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F25CA29950F2FC3461118A6 /* MacClickApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacClickApp.swift; sourceTree = "<group>"; };
+		830D808938C9954FC9383D0B /* FeatureStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStore.swift; sourceTree = "<group>"; };
 		8B61D7C682D443657DAC6292 /* MacClickFinderSync.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MacClickFinderSync.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroupIdentifier.swift; sourceTree = "<group>"; };
 		B9AFD90F5DEE0EEE9812C4A4 /* MacClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5F08976C98AD91790003243 /* FeatureStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureStoreTests.swift; sourceTree = "<group>"; };
 		C878FBFF7DBEA4D04EAD9F06 /* FinderSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSyncController.swift; sourceTree = "<group>"; };
+		D86823D8C177902A5D5F972A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -61,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				8DCA9E2CD82AEEA94EA86C31 /* AppGroupIdentifier.swift */,
+				D86823D8C177902A5D5F972A /* Feature.swift */,
+				830D808938C9954FC9383D0B /* FeatureStore.swift */,
 			);
 			name = Sources;
 			path = Sources;
@@ -78,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				45CD623F1084ED969BF28EA4 /* AppGroupIdentifierTests.swift */,
+				C5F08976C98AD91790003243 /* FeatureStoreTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -242,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4323508462C36B8FC597DA2D /* AppGroupIdentifierTests.swift in Sources */,
+				47EBA4B17623E6A9FE0C510E /* FeatureStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +262,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B3A4855FC9566C42099C8E0 /* AppGroupIdentifier.swift in Sources */,
+				D6368D649039E5818BED813F /* Feature.swift in Sources */,
+				F73B2C123607C8402917E165 /* FeatureStore.swift in Sources */,
 				7BA422986638354B027799AD /* FinderSyncController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +273,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				370EA5D6AC9FC9EE8390F58C /* AppGroupIdentifier.swift in Sources */,
+				5D68BD912E108586E16B67A7 /* Feature.swift in Sources */,
+				B8017BB27E98C89667C6D1E1 /* FeatureStore.swift in Sources */,
 				CB09652C77EAC4BC9B0FEFFD /* MacClickApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
