@@ -7,45 +7,69 @@ final class MenuApplicabilityTests: XCTestCase {
     private let zip = ClickTarget.items([URL(fileURLWithPath: "/tmp/archive.zip")])
     private let selectedFolder = ClickTarget.items([URL(fileURLWithPath: "/tmp/sub", isDirectory: true)])
 
+    private func applies(_ feature: Feature, to target: ClickTarget) -> Bool {
+        MenuApplicability.applies(feature, to: target, visibleContexts: feature.defaultContexts)
+    }
+
     func testNewTextFileAppliesOnEmptySpaceAndSelectedFolderOnly() {
-        XCTAssertTrue(MenuApplicability.applies(.newTextFile, to: folder))
-        XCTAssertTrue(MenuApplicability.applies(.newTextFile, to: selectedFolder))
-        XCTAssertFalse(MenuApplicability.applies(.newTextFile, to: file))
+        XCTAssertTrue(applies(.newTextFile, to: folder))
+        XCTAssertTrue(applies(.newTextFile, to: selectedFolder))
+        XCTAssertFalse(applies(.newTextFile, to: file))
     }
 
     func testExtractZipOnlyAppliesToASingleZipFile() {
-        XCTAssertTrue(MenuApplicability.applies(.extractZip, to: zip))
-        XCTAssertFalse(MenuApplicability.applies(.extractZip, to: file))
-        XCTAssertFalse(MenuApplicability.applies(.extractZip, to: folder))
+        XCTAssertTrue(applies(.extractZip, to: zip))
+        XCTAssertFalse(applies(.extractZip, to: file))
+        XCTAssertFalse(applies(.extractZip, to: folder))
     }
 
     func testChecksumOnlyAppliesToASingleFileNotAFolder() {
-        XCTAssertTrue(MenuApplicability.applies(.copySHA256Checksum, to: file))
-        XCTAssertFalse(MenuApplicability.applies(.copySHA256Checksum, to: selectedFolder))
-        XCTAssertFalse(MenuApplicability.applies(.copySHA256Checksum, to: folder))
+        XCTAssertTrue(applies(.copySHA256Checksum, to: file))
+        XCTAssertFalse(applies(.copySHA256Checksum, to: selectedFolder))
+        XCTAssertFalse(applies(.copySHA256Checksum, to: folder))
     }
 
     func testCopyPathAppliesEverywhere() {
-        XCTAssertTrue(MenuApplicability.applies(.copyPath, to: folder))
-        XCTAssertTrue(MenuApplicability.applies(.copyPath, to: file))
+        XCTAssertTrue(applies(.copyPath, to: folder))
+        XCTAssertTrue(applies(.copyPath, to: file))
     }
 
     func testGetInfoAppliesEverywhere() {
-        XCTAssertTrue(MenuApplicability.applies(.getInfo, to: folder))
-        XCTAssertTrue(MenuApplicability.applies(.getInfo, to: file))
+        XCTAssertTrue(applies(.getInfo, to: folder))
+        XCTAssertTrue(applies(.getInfo, to: file))
     }
 
     func testRenameOnlyAppliesToASingleSelectedItem() {
-        XCTAssertTrue(MenuApplicability.applies(.rename, to: file))
-        XCTAssertFalse(MenuApplicability.applies(.rename, to: ClickTarget.items([file.firstURL!, zip.firstURL!])))
-        XCTAssertFalse(MenuApplicability.applies(.rename, to: folder))
+        XCTAssertTrue(applies(.rename, to: file))
+        XCTAssertFalse(applies(.rename, to: ClickTarget.items([file.firstURL!, zip.firstURL!])))
+        XCTAssertFalse(applies(.rename, to: folder))
     }
 
     func testDuplicateMoveToTrashQuickLookAndTagsOnlyApplyToASelection() {
         for feature in [Feature.duplicate, .moveToTrash, .quickLook, .tags] {
-            XCTAssertTrue(MenuApplicability.applies(feature, to: file))
-            XCTAssertFalse(MenuApplicability.applies(feature, to: folder))
+            XCTAssertTrue(applies(feature, to: file))
+            XCTAssertFalse(applies(feature, to: folder))
         }
+    }
+
+    func testMenuContextMatchesTheRightCategoryForEachTargetShape() {
+        XCTAssertEqual(MenuContext.matching(folder), .emptySpace)
+        XCTAssertEqual(MenuContext.matching(file), .singleFile)
+        XCTAssertEqual(MenuContext.matching(selectedFolder), .singleFolder)
+        XCTAssertEqual(MenuContext.matching(.items([file.firstURL!, zip.firstURL!])), .multipleItems)
+    }
+
+    func testUserContextPreferenceNarrowsWhereAFeasibleFeatureShows() {
+        // copyPath is structurally feasible everywhere, but the user can
+        // still turn it off for a context they don't want it in.
+        XCTAssertFalse(MenuApplicability.applies(.copyPath, to: file, visibleContexts: [.emptySpace]))
+        XCTAssertTrue(MenuApplicability.applies(.copyPath, to: file, visibleContexts: [.singleFile]))
+    }
+
+    func testUserContextPreferenceCannotOverrideAStructuralRule() {
+        // extractZip is never feasible for a non-.zip file, even if the
+        // user asks for it to show for every single file.
+        XCTAssertFalse(MenuApplicability.applies(.extractZip, to: file, visibleContexts: [.singleFile]))
     }
 }
 
