@@ -179,7 +179,19 @@ struct FeatureActionRunner {
         guard let vsCodeURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.microsoft.VSCode") else {
             return presentAlert("Install Visual Studio Code to use this action.")
         }
-        NSWorkspace.shared.open(urls, withApplicationAt: vsCodeURL, configuration: NSWorkspace.OpenConfiguration())
+        // NSWorkspace.open(_:withApplicationAt:) cold-launches VS Code and hands
+        // it the paths in the same step, but Electron apps register their
+        // open-file listener after launch and miss that initial event — it
+        // only works when an instance is already running. VS Code's own CLI
+        // is built to open paths reliably either way.
+        let process = Process()
+        process.executableURL = vsCodeURL.appendingPathComponent("Contents/Resources/app/bin/code")
+        process.arguments = urls.map(\.path)
+        do {
+            try process.run()
+        } catch {
+            presentAlert("Couldn't open Visual Studio Code: \(error.localizedDescription)")
+        }
     }
 
     private func newTextFile(_ target: Target) {
