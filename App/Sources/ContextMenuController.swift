@@ -142,9 +142,14 @@ final class ContextMenuController {
         let menu = NSMenu()
         for feature in applicable {
             let item = NSMenuItem(title: feature.title, action: nil, keyEquivalent: "")
-            if feature.id == Feature.tags.id {
+            switch feature.id {
+            case Feature.tags.id:
                 item.submenu = tagsSubmenu(for: target)
-            } else {
+            case Feature.openWith.id:
+                item.submenu = openWithSubmenu(for: target)
+            case Feature.sortBy.id:
+                item.submenu = sortBySubmenu()
+            default:
                 item.action = #selector(menuItemSelected(_:))
                 item.target = self
                 item.representedObject = (feature, target)
@@ -176,6 +181,45 @@ final class ContextMenuController {
     @objc private func tagColorSelected(_ sender: NSMenuItem) {
         guard let (color, target) = sender.representedObject as? (String, ClickTarget) else { return }
         runner.applyTag(color, target: runnerTarget(for: target))
+    }
+
+    private func openWithSubmenu(for target: ClickTarget) -> NSMenu {
+        let submenu = NSMenu()
+        let apps = runner.applicationsToOpen(runnerTarget(for: target))
+        guard !apps.isEmpty else {
+            let empty = NSMenuItem(title: "No compatible applications", action: nil, keyEquivalent: "")
+            empty.isEnabled = false
+            submenu.addItem(empty)
+            return submenu
+        }
+        for app in apps.sorted(by: { FileManager.default.displayName(atPath: $0.path) < FileManager.default.displayName(atPath: $1.path) }) {
+            let item = NSMenuItem(title: FileManager.default.displayName(atPath: app.path), action: #selector(openWithAppSelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = (app, target)
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
+    @objc private func openWithAppSelected(_ sender: NSMenuItem) {
+        guard let (app, target) = sender.representedObject as? (URL, ClickTarget) else { return }
+        runner.openWith(app, target: runnerTarget(for: target))
+    }
+
+    private func sortBySubmenu() -> NSMenu {
+        let submenu = NSMenu()
+        for arrangement in FeatureActionRunner.SortArrangement.allCases {
+            let item = NSMenuItem(title: arrangement.title, action: #selector(sortArrangementSelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = arrangement
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
+    @objc private func sortArrangementSelected(_ sender: NSMenuItem) {
+        guard let arrangement = sender.representedObject as? FeatureActionRunner.SortArrangement else { return }
+        runner.sortFrontmostWindow(by: arrangement)
     }
 
     private func runnerTarget(for target: ClickTarget) -> FeatureActionRunner.Target {

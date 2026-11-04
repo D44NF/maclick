@@ -26,6 +26,14 @@ struct FeatureActionRunner {
         case Feature.duplicate.id: duplicate(target)
         case Feature.moveToTrash.id: moveToTrash(target)
         case Feature.quickLook.id: quickLook(target)
+        case Feature.open.id: openItems(target)
+        case Feature.makeAlias.id: makeAlias(target)
+        case Feature.newFolderWithSelection.id: newFolderWithSelection(target)
+        case Feature.moveTo.id: moveTo(target)
+        case Feature.copy.id: copyItems(target)
+        case Feature.paste.id: paste(target)
+        case Feature.cleanUp.id: cleanUp(target)
+        case Feature.showViewOptions.id: showViewOptions(target)
         default: break
         }
     }
@@ -43,6 +51,56 @@ struct FeatureActionRunner {
             tags.append(colorName)
             try? url.setResourceValue(tags, forKey: .tagNamesKey)
         }
+    }
+
+    /// Applications able to open `target`'s items, for Open With's own
+    /// submenu. Based on the first item only — Open With shows for a
+    /// single selected item, per Feature.openWith's default contexts.
+    func applicationsToOpen(_ target: Target) -> [URL] {
+        guard let first = items(target).first else { return [] }
+        return Array(NSWorkspace.shared.urlsForApplications(toOpen: first))
+    }
+
+    /// Opens `target`'s items with a specific application, chosen from
+    /// Open With's own submenu. Not routed through `run(_:target:)` since
+    /// it needs an application, not just the feature and target.
+    func openWith(_ application: URL, target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        NSWorkspace.shared.open(urls, withApplicationAt: application, configuration: NSWorkspace.OpenConfiguration())
+    }
+
+    enum SortArrangement: String, CaseIterable {
+        case name, kind, dateModified, size, label, none
+
+        var title: String {
+            switch self {
+            case .name: return "Name"
+            case .kind: return "Kind"
+            case .dateModified: return "Date Modified"
+            case .size: return "Size"
+            case .label: return "Label"
+            case .none: return "None"
+            }
+        }
+
+        fileprivate var appleScriptLiteral: String {
+            switch self {
+            case .name: return "arranged by name"
+            case .kind: return "arranged by kind"
+            case .dateModified: return "arranged by modification date"
+            case .size: return "arranged by size"
+            case .label: return "arranged by label"
+            case .none: return "not arranged"
+            }
+        }
+    }
+
+    // shortcut: only arranges icon-view windows (Finder's list/column
+    // views sort via a different, per-column property); upgrade if Sort
+    // By needs to work in those view modes too.
+    func sortFrontmostWindow(by arrangement: SortArrangement) {
+        runFinderScript("tell application \"Finder\" to set arrangement of icon view options of window 1 to \(arrangement.appleScriptLiteral)")
     }
 
     private func items(_ target: Target) -> [URL] {
@@ -176,6 +234,93 @@ struct FeatureActionRunner {
         process.standardOutput = FileHandle.nullDevice
         process.standardError = FileHandle.nullDevice
         try? process.run()
+    }
+
+    private func openItems(_ target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        urls.forEach { NSWorkspace.shared.open($0) }
+    }
+
+    private func makeAlias(_ target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        let commands = urls.map {
+            "make new alias file at \(finderAliasExpression(for: $0.deletingLastPathComponent())) to \(finderAliasExpression(for: $0))"
+        }
+        runFinderScript("tell application \"Finder\"\n\(commands.joined(separator: "\n"))\nend tell")
+    }
+
+    private func newFolderWithSelection(_ target: Target) {
+        let urls = items(target)
+        guard let directory = urls.first?.deletingLastPathComponent() else { return }
+        let namer = UniqueFileNamer()
+        let newFolder = namer.uniqueURL(forBaseName: "New Folder", in: directory)
+        do {
+            try FileManager.default.createDirectory(at: newFolder, withIntermediateDirectories: false)
+            for url in urls {
+                try FileManager.default.moveItem(at: url, to: namer.uniqueURL(forBaseName: url.lastPathComponent, in: newFolder))
+            }
+            NSWorkspace.shared.activateFileViewerSelecting([newFolder])
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    private func moveTo(_ target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = false
+        panel.allowsMultipleSelection = false
+        panel.prompt = "Move"
+        guard panel.runModal() == .OK, let destination = panel.url else { return }
+
+        let namer = UniqueFileNamer()
+        do {
+            for url in urls {
+                try FileManager.default.moveItem(at: url, to: namer.uniqueURL(forBaseName: url.lastPathComponent, in: destination))
+            }
+            NSWorkspace.shared.activateFileViewerSelecting([destination])
+        } catch {
+            NSAlert(error: error).runModal()
+        }
+    }
+
+    private func copyItems(_ target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.writeObjects(urls as [NSURL])
+    }
+
+    private func paste(_ target: Target) {
+        guard let directory = folder(target) else { return }
+        guard let sources = NSPasteboard.general.readObjects(forClasses: [NSURL.self], options: [.urlReadingFileURLsOnly: true]) as? [URL],
+              !sources.isEmpty else { return }
+
+        let namer = UniqueFileNamer()
+        for source in sources {
+            try? FileManager.default.copyItem(at: source, to: namer.uniqueURL(forBaseName: source.lastPathComponent, in: directory))
+        }
+        NSWorkspace.shared.activateFileViewerSelecting([directory])
+    }
+
+    private func cleanUp(_ target: Target) {
+        runFinderScript("tell application \"Finder\" to clean up window 1")
+    }
+
+    private func showViewOptions(_ target: Target) {
+        NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").first?.activate(options: [])
+        let source = CGEventSource(stateID: .hidSystemState)
+        let keyDown = CGEvent(keyboardEventSource: source, virtualKey: 38, keyDown: true)
+        keyDown?.flags = .maskCommand
+        keyDown?.post(tap: .cghidEventTap)
+        let keyUp = CGEvent(keyboardEventSource: source, virtualKey: 38, keyDown: false)
+        keyUp?.flags = .maskCommand
+        keyUp?.post(tap: .cghidEventTap)
     }
 
     private func finderAliasExpression(for url: URL) -> String {
