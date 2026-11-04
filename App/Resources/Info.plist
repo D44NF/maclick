@@ -29,7 +29,7 @@
 	<key>NSAppleEventsUsageDescription</key>
 	<string>MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright. All rights reserved.</string>
+	<string>Copyright © 2026 Daan Fenske. MIT License.</string>
 	<key>NSServices</key>
 	<array>
 		<dict>

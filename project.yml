@@ -25,6 +25,7 @@ targets:
     platform: macOS
     sources:
       - App/Sources
+      - App/Resources/Assets.xcassets
       - path: Shared/Sources
         group: Shared
     settings:
@@ -32,6 +33,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick
         CODE_SIGN_ENTITLEMENTS: App/Resources/MacClick.entitlements
         ENABLE_HARDENED_RUNTIME: true
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         COMBINE_HIDPI_IMAGES: true
     info:
       path: App/Resources/Info.plist
@@ -39,7 +41,7 @@ targets:
         CFBundleDisplayName: MacClick
         LSMinimumSystemVersion: "12.0"
         LSApplicationCategoryType: public.app-category.utilities
-        NSHumanReadableCopyright: Copyright. All rights reserved.
+        NSHumanReadableCopyright: Copyright © 2026 Daan Fenske. MIT License.
         LSUIElement: false
         NSAppleEventsUsageDescription: MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.
         NSServices:
