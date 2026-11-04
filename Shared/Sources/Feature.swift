@@ -132,12 +132,94 @@ extension Feature {
         defaultContexts: [.singleFile, .singleFolder, .multipleItems]
     )
 
+    static let open = Feature(
+        id: "open",
+        title: "Open",
+        subtitle: "Open the selected items with their default application.",
+        symbolName: "arrow.up.forward.app",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let openWith = Feature(
+        id: "openWith",
+        title: "Open With",
+        subtitle: "Choose which application opens the selected item.",
+        symbolName: "arrow.up.forward.app.fill",
+        defaultContexts: [.singleFile, .singleFolder]
+    )
+
+    static let makeAlias = Feature(
+        id: "makeAlias",
+        title: "Make Alias",
+        subtitle: "Create a Finder alias for the selected items.",
+        symbolName: "arrow.turn.up.right",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let newFolderWithSelection = Feature(
+        id: "newFolderWithSelection",
+        title: "New Folder with Selection",
+        subtitle: "Move the selected items into a new folder alongside them.",
+        symbolName: "folder.badge.plus",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let moveTo = Feature(
+        id: "moveTo",
+        title: "Move to…",
+        subtitle: "Choose a folder to move the selected items into.",
+        symbolName: "folder.badge.gearshape",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let copy = Feature(
+        id: "copy",
+        title: "Copy",
+        subtitle: "Copy the selected items, to paste them elsewhere.",
+        symbolName: "doc.on.doc",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let paste = Feature(
+        id: "paste",
+        title: "Paste Items",
+        subtitle: "Paste previously copied items into this folder.",
+        symbolName: "doc.on.clipboard.fill",
+        defaultContexts: [.singleFolder, .emptySpace]
+    )
+
+    static let sortBy = Feature(
+        id: "sortBy",
+        title: "Sort By",
+        subtitle: "Arrange this Finder window's icons by name, kind, date, size, or label.",
+        symbolName: "arrow.up.arrow.down",
+        defaultContexts: [.emptySpace]
+    )
+
+    static let cleanUp = Feature(
+        id: "cleanUp",
+        title: "Clean Up",
+        subtitle: "Snap this Finder window's icons back to the grid.",
+        symbolName: "square.grid.3x3",
+        defaultContexts: [.emptySpace]
+    )
+
+    static let showViewOptions = Feature(
+        id: "showViewOptions",
+        title: "Show View Options",
+        subtitle: "Open Finder's View Options panel for the current window.",
+        symbolName: "slider.horizontal.3",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems, .emptySpace]
+    )
+
     /// Every feature MacClick currently offers, in default display order.
     static let all: [Feature] = [
         newTextFile, newFolder,
         copyPath, copySHA256Checksum, copyMD5Checksum,
         compressToZip, extractZip,
         openTerminalHere, openInVSCode,
-        getInfo, rename, duplicate, moveToTrash, quickLook, tags
+        getInfo, rename, duplicate, moveToTrash, quickLook, tags,
+        open, openWith, makeAlias, newFolderWithSelection, moveTo,
+        copy, paste, sortBy, cleanUp, showViewOptions
     ]
 }
