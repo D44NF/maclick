@@ -1,9 +1,16 @@
 import SwiftUI
 
-/// Lists every Finder action MacClick offers, in the order they'll show
-/// up in the custom context menu. Drag to reorder, toggle to enable.
+/// Lets the user turn each Finder action on or off, choose which click
+/// contexts show it, and (in the Menu Order tab) set its position per
+/// context in the custom context menu.
 struct ContentView: View {
-    @State private var features: [Feature]
+    private enum Tab: String, CaseIterable, Identifiable {
+        case features = "Features"
+        case menuOrder = "Menu Order"
+        var id: String { rawValue }
+    }
+
+    @State private var tab: Tab = .features
     @State private var enabledFeatures: [String: Bool]
     @State private var featureContexts: [String: Set<MenuContext>]
 
@@ -11,7 +18,6 @@ struct ContentView: View {
 
     init(store: FeatureStore = .shared) {
         self.store = store
-        _features = State(initialValue: store.orderedFeatures())
         _enabledFeatures = State(
             initialValue: Dictionary(uniqueKeysWithValues: Feature.all.map { ($0.id, store.isEnabled($0)) })
         )
@@ -21,15 +27,32 @@ struct ContentView: View {
     }
 
     var body: some View {
+        VStack(spacing: 0) {
+            Picker("", selection: $tab) {
+                ForEach(Tab.allCases) { Text($0.rawValue).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .padding()
+
+            switch tab {
+            case .features:
+                featuresList
+            case .menuOrder:
+                MenuOrderView(store: store)
+            }
+        }
+        .safeAreaInset(edge: .bottom) { ExtensionSettingsFooter() }
+        .frame(minWidth: 460, idealWidth: 560, maxWidth: 680, minHeight: 460, idealHeight: 680, maxHeight: 860)
+    }
+
+    private var featuresList: some View {
         List {
-            ForEach(features) { feature in
+            ForEach(Feature.all) { feature in
                 FeatureRow(feature: feature, isEnabled: binding(for: feature), visibleContexts: contextBinding(for: feature))
             }
-            .onMove(perform: move)
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
-        .safeAreaInset(edge: .bottom) { ExtensionSettingsFooter() }
-        .frame(minWidth: 460, idealWidth: 520, maxWidth: 640, minHeight: 420, idealHeight: 560, maxHeight: 800)
     }
 
     private func binding(for feature: Feature) -> Binding<Bool> {
@@ -50,11 +73,6 @@ struct ContentView: View {
                 store.setVisibleContexts(newValue, for: feature)
             }
         )
-    }
-
-    private func move(from source: IndexSet, to destination: Int) {
-        features.move(fromOffsets: source, toOffset: destination)
-        store.setOrder(features)
     }
 }
 
