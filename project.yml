@@ -39,6 +39,8 @@ targets:
       path: App/Resources/Info.plist
       properties:
         CFBundleDisplayName: MacClick
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSMinimumSystemVersion: "12.0"
         LSApplicationCategoryType: public.app-category.utilities
         NSHumanReadableCopyright: Copyright © 2026 Daan Fenske. GPL-3.0-or-later.
@@ -120,6 +122,8 @@ targets:
       path: FinderSync/Resources/Info.plist
       properties:
         CFBundleDisplayName: MacClick FinderSync
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.FinderSync
           NSExtensionPrincipalClass: FinderSyncController
