@@ -86,7 +86,17 @@ final class ServicesProvider: NSObject {
         }
 
         withAccess(to: urls) {
-            NSWorkspace.shared.open(urls, withApplicationAt: vsCodeURL, configuration: NSWorkspace.OpenConfiguration())
+            // See FeatureActionRunner.openInVSCode: NSWorkspace's open-with-app
+            // API misses Electron's open-file listener on a cold launch, so
+            // this goes through VS Code's own CLI instead.
+            let process = Process()
+            process.executableURL = vsCodeURL.appendingPathComponent("Contents/Resources/app/bin/code")
+            process.arguments = urls.map(\.path)
+            do {
+                try process.run()
+            } catch let launchError {
+                fail("Couldn't open Visual Studio Code: \(launchError.localizedDescription)", error)
+            }
         }
     }
 
