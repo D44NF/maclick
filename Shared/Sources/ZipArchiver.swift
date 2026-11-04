@@ -44,7 +44,12 @@ struct ZipArchiver {
         let folderName = archive.deletingPathExtension().lastPathComponent
         let destination = namer.uniqueURL(forBaseName: folderName, in: directory)
         try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: false)
-        try run(arguments: ["-x", "-k", archive.path, destination.path])
+        do {
+            try run(arguments: ["-x", "-k", archive.path, destination.path])
+        } catch {
+            try? FileManager.default.removeItem(at: destination)
+            throw error
+        }
         return destination
     }
 
