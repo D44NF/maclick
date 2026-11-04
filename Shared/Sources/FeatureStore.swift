@@ -35,9 +35,27 @@ final class FeatureStore {
         defaults.set(features.map(\.id), forKey: orderKey)
     }
 
+    /// Which click contexts (file, folder, multiple items, empty space)
+    /// show this feature. Falls back to the feature's own default until
+    /// the user customizes it.
+    func visibleContexts(for feature: Feature) -> Set<MenuContext> {
+        guard let saved = defaults.stringArray(forKey: contextsKey(for: feature)) else {
+            return feature.defaultContexts
+        }
+        return Set(saved.compactMap(MenuContext.init(rawValue:)))
+    }
+
+    func setVisibleContexts(_ contexts: Set<MenuContext>, for feature: Feature) {
+        defaults.set(contexts.map(\.rawValue), forKey: contextsKey(for: feature))
+    }
+
     private let orderKey = "featureOrder"
 
     private func key(for feature: Feature) -> String {
         "feature.\(feature.id).enabled"
+    }
+
+    private func contextsKey(for feature: Feature) -> String {
+        "feature.\(feature.id).contexts"
     }
 }
