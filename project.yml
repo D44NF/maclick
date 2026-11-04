@@ -41,7 +41,7 @@ targets:
         CFBundleDisplayName: MacClick
         LSMinimumSystemVersion: "12.0"
         LSApplicationCategoryType: public.app-category.utilities
-        NSHumanReadableCopyright: Copyright © 2026 Daan Fenske. MIT License.
+        NSHumanReadableCopyright: Copyright © 2026 Daan Fenske. GPL-3.0-or-later.
         LSUIElement: false
         NSAppleEventsUsageDescription: MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.
         NSServices:
