@@ -21,7 +21,7 @@
 <p align="center">
   <a href="#building"><img src="https://img.shields.io/badge/macOS-12%2B-black" alt="macOS 12 and newer"></a>
   <a href="#building"><img src="https://img.shields.io/badge/Swift-5.9-orange" alt="Swift 5.9"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License MIT"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue" alt="License GPL 3.0 or later"></a>
 </p>
 
 <p align="center">
@@ -123,4 +123,4 @@ MacClick is local-first: no account, no analytics, no telemetry, no network acce
 
 ## License
 
-[MIT](LICENSE), copyright © 2026 Daan Fenske.
+[GPL 3.0 or later](LICENSE), copyright © 2026 Daan Fenske.
