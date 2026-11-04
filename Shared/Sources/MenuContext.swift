@@ -24,7 +24,7 @@ enum MenuContext: String, CaseIterable, Identifiable {
             return .emptySpace
         case .items(let urls) where urls.count > 1:
             return .multipleItems
-        case .items(let urls) where urls[0].hasDirectoryPath:
+        case .items(let urls) where urls.first?.hasDirectoryPath == true:
             return .singleFolder
         case .items:
             return .singleFile

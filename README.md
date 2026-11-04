@@ -130,6 +130,8 @@ If you also want the dormant Finder Sync extension enabled for when Apple fixes 
 
 MacClick is local-first: no account, no analytics, no telemetry, no network access at all. Reading your selection, moving files, computing a checksum, opening another app — all of it happens on your Mac, through AppleScript calls to Finder or direct file operations.
 
+Accessibility access is what makes the custom menu possible at all (intercepting Finder's right-click requires it), and it's a broad permission: in principle it lets any app watch and simulate input system-wide, not just within Finder. MacClick only uses it the way this README describes, and the app isn't sandboxed — this is a meaningful amount of trust to grant, worth knowing before you flip that switch in System Settings.
+
 ## License
 
 [GPL 3.0 or later](LICENSE), copyright © 2026 Daan Fenske.

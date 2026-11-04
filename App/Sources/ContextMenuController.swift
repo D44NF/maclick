@@ -240,7 +240,7 @@ final class ContextMenuController {
                 repeat with anItem in sel
                     set end of thePaths to POSIX path of (anItem as alias)
                 end repeat
-                set AppleScript's text item delimiters to linefeed
+                set AppleScript's text item delimiters to (ASCII character 0)
                 return "SEL:" & (thePaths as text)
             else
                 return "DIR:" & POSIX path of (insertion location as alias)
@@ -256,7 +256,11 @@ final class ContextMenuController {
         guard errorInfo == nil, let value = result.stringValue else { return nil }
 
         if value.hasPrefix("SEL:") {
-            let urls = value.dropFirst(4).split(separator: "\n").map { URL(fileURLWithPath: String($0)) }
+            // NUL, not newline: it's one of only two bytes a POSIX path can
+            // never contain (the other being "/", which is a real separator
+            // within each path), so it's a safe delimiter between paths —
+            // a newline could appear inside an actual file name.
+            let urls = value.dropFirst(4).split(separator: "\0").map { URL(fileURLWithPath: String($0)) }
             return urls.isEmpty ? nil : .items(urls)
         }
         if value.hasPrefix("DIR:") {

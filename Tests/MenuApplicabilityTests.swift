@@ -59,6 +59,10 @@ final class MenuApplicabilityTests: XCTestCase {
         XCTAssertEqual(MenuContext.matching(.items([file.firstURL!, zip.firstURL!])), .multipleItems)
     }
 
+    func testMenuContextDoesNotCrashOnAnEmptyItemsList() {
+        XCTAssertEqual(MenuContext.matching(.items([])), .singleFile)
+    }
+
     func testUserContextPreferenceNarrowsWhereAFeasibleFeatureShows() {
         // copyPath is structurally feasible everywhere, but the user can
         // still turn it off for a context they don't want it in.

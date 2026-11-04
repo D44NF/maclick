@@ -314,8 +314,12 @@ struct FeatureActionRunner {
               !sources.isEmpty else { return }
 
         let namer = UniqueFileNamer()
-        for source in sources {
-            try? FileManager.default.copyItem(at: source, to: namer.uniqueURL(forBaseName: source.lastPathComponent, in: directory))
+        do {
+            for source in sources {
+                try FileManager.default.copyItem(at: source, to: namer.uniqueURL(forBaseName: source.lastPathComponent, in: directory))
+            }
+        } catch {
+            NSAlert(error: error).runModal()
         }
         NSWorkspace.shared.activateFileViewerSelecting([directory])
     }
