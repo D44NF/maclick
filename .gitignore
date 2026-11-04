@@ -17,3 +17,6 @@ Config/Local.xcconfig
 
 ## Local-only dev notes (project overview for you/AI agents), never pushed
 .local/
+
+## Scripts/release.sh output
+/dist/

@@ -10,6 +10,7 @@
 </p>
 
 <p align="center">
+  <a href="#install">Install</a> ·
   <a href="#everything-it-does">Features</a> ·
   <a href="#customize-everything">Customization</a> ·
   <a href="#how-it-works">How it works</a> ·
@@ -29,6 +30,14 @@
 </p>
 
 Right-click a file, a folder, or empty space in Finder and get a menu built from exactly the actions you picked — classic Finder actions like Get Info, Rename, Duplicate, and Move to Trash, alongside things Finder never offered: Copy Path, checksums, Open Terminal Here, Open in VS Code, and more. Every action can be switched on or off, reordered, and scoped to the contexts where it makes sense — a single file, a folder, multiple items, or empty space — all from one settings window.
+
+## Install
+
+Grab the latest `.dmg` from [Releases](https://github.com/D44NF/maclick/releases/latest), open it, and drag MacClick into Applications.
+
+MacClick isn't signed with a paid Apple Developer ID, so macOS will say it "cannot be opened because the developer cannot be verified" the first time you launch it. Right-click (or Control-click) MacClick in Applications, choose **Open**, then confirm — you only need to do this once per version. After updating to a new release, you'll likely need to repeat this (and re-grant Accessibility access in System Settings), since each build's signature changes without a paid developer account.
+
+Want to build it yourself instead? See [Building](#building).
 
 ## Everything it does
 
@@ -84,7 +93,7 @@ A `FIFinderSync` Finder Sync extension ships alongside it, ready for the day App
 
 ## Building
 
-MacClick isn't notarized or distributed as a signed build yet — building from source is currently the only way to run it.
+Prebuilt `.dmg` downloads are available from [Releases](#install) — this section is for building from source instead.
 
 `MacClick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen) and isn't committed — a generated project file can bake in locally selected signing settings, which must never end up in this public repo.
 
