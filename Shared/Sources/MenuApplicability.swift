@@ -38,6 +38,17 @@ enum MenuApplicability {
             }
             return false
 
+        case Feature.getInfo.id:
+            return true
+
+        case Feature.rename.id:
+            if case .items(let urls) = target { return urls.count == 1 }
+            return false
+
+        case Feature.duplicate.id, Feature.moveToTrash.id, Feature.quickLook.id, Feature.tags.id:
+            if case .items(let urls) = target { return !urls.isEmpty }
+            return false
+
         default:
             return false
         }

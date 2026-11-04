@@ -72,11 +72,54 @@ extension Feature {
         symbolName: "chevron.left.forwardslash.chevron.right"
     )
 
+    static let getInfo = Feature(
+        id: "getInfo",
+        title: "Get Info",
+        subtitle: "Show Finder's info window for the selection, or the current folder.",
+        symbolName: "info.circle"
+    )
+
+    static let rename = Feature(
+        id: "rename",
+        title: "Rename",
+        subtitle: "Select a single item to rename it inline, like Finder's own Rename.",
+        symbolName: "pencil"
+    )
+
+    static let duplicate = Feature(
+        id: "duplicate",
+        title: "Duplicate",
+        subtitle: "Create a copy of the selected items in the same folder.",
+        symbolName: "plus.square.on.square"
+    )
+
+    static let moveToTrash = Feature(
+        id: "moveToTrash",
+        title: "Move to Trash",
+        subtitle: "Move the selected items to the Trash.",
+        symbolName: "trash"
+    )
+
+    static let quickLook = Feature(
+        id: "quickLook",
+        title: "Quick Look",
+        subtitle: "Preview the selected items without opening them.",
+        symbolName: "eye"
+    )
+
+    static let tags = Feature(
+        id: "tags",
+        title: "Tags",
+        subtitle: "Apply a color tag to the selected items.",
+        symbolName: "tag"
+    )
+
     /// Every feature MacClick currently offers, in default display order.
     static let all: [Feature] = [
         newTextFile, newFolder,
         copyPath, copySHA256Checksum, copyMD5Checksum,
         compressToZip, extractZip,
-        openTerminalHere, openInVSCode
+        openTerminalHere, openInVSCode,
+        getInfo, rename, duplicate, moveToTrash, quickLook, tags
     ]
 }

@@ -29,4 +29,29 @@ final class MenuApplicabilityTests: XCTestCase {
         XCTAssertTrue(MenuApplicability.applies(.copyPath, to: folder))
         XCTAssertTrue(MenuApplicability.applies(.copyPath, to: file))
     }
+
+    func testGetInfoAppliesEverywhere() {
+        XCTAssertTrue(MenuApplicability.applies(.getInfo, to: folder))
+        XCTAssertTrue(MenuApplicability.applies(.getInfo, to: file))
+    }
+
+    func testRenameOnlyAppliesToASingleSelectedItem() {
+        XCTAssertTrue(MenuApplicability.applies(.rename, to: file))
+        XCTAssertFalse(MenuApplicability.applies(.rename, to: ClickTarget.items([file.firstURL!, zip.firstURL!])))
+        XCTAssertFalse(MenuApplicability.applies(.rename, to: folder))
+    }
+
+    func testDuplicateMoveToTrashQuickLookAndTagsOnlyApplyToASelection() {
+        for feature in [Feature.duplicate, .moveToTrash, .quickLook, .tags] {
+            XCTAssertTrue(MenuApplicability.applies(feature, to: file))
+            XCTAssertFalse(MenuApplicability.applies(feature, to: folder))
+        }
+    }
+}
+
+private extension ClickTarget {
+    var firstURL: URL? {
+        if case .items(let urls) = self { return urls.first }
+        return nil
+    }
 }
