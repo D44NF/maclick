@@ -1,14 +1,16 @@
 import SwiftUI
 
-/// Lists every Finder action MacClick offers, grouped by category, each
-/// with its own on/off toggle backed by the shared ``FeatureStore``.
+/// Lists every Finder action MacClick offers, in the order they'll show
+/// up in the custom context menu. Drag to reorder, toggle to enable.
 struct ContentView: View {
+    @State private var features: [Feature]
     @State private var enabledFeatures: [String: Bool]
 
     private let store: FeatureStore
 
     init(store: FeatureStore = .shared) {
         self.store = store
+        _features = State(initialValue: store.orderedFeatures())
         _enabledFeatures = State(
             initialValue: Dictionary(uniqueKeysWithValues: Feature.all.map { ($0.id, store.isEnabled($0)) })
         )
@@ -16,13 +18,10 @@ struct ContentView: View {
 
     var body: some View {
         List {
-            ForEach(Feature.Category.allCases) { category in
-                Section(category.rawValue) {
-                    ForEach(Feature.all.filter { $0.category == category }) { feature in
-                        FeatureRow(feature: feature, isEnabled: binding(for: feature))
-                    }
-                }
+            ForEach(features) { feature in
+                FeatureRow(feature: feature, isEnabled: binding(for: feature))
             }
+            .onMove(perform: move)
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
         .safeAreaInset(edge: .bottom) { ExtensionSettingsFooter() }
@@ -37,6 +36,11 @@ struct ContentView: View {
                 store.setEnabled(newValue, for: feature)
             }
         )
+    }
+
+    private func move(from source: IndexSet, to destination: Int) {
+        features.move(fromOffsets: source, toOffset: destination)
+        store.setOrder(features)
     }
 }
 
