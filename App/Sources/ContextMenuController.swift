@@ -133,7 +133,8 @@ final class ContextMenuController {
         }
 
         let store = FeatureStore.shared
-        let applicable = store.orderedFeatures()
+        let context = MenuContext.matching(target)
+        let applicable = store.orderedFeatures(for: context)
             .filter(store.isEnabled)
             .filter { MenuApplicability.applies($0, to: target, visibleContexts: store.visibleContexts(for: $0)) }
         logger.notice("Presenting custom menu with \(applicable.count) applicable items")

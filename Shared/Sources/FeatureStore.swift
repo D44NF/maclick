@@ -22,17 +22,21 @@ final class FeatureStore {
         defaults.set(enabled, forKey: key(for: feature))
     }
 
-    /// Features in the user's chosen display/menu order. Anything not yet
-    /// ordered (new features) is appended at the end in catalog order.
-    func orderedFeatures() -> [Feature] {
+    /// Features in the user's chosen order for one click context. Anything
+    /// not yet ordered for this context falls back to the pre-per-context
+    /// global order (if the user had one from before this feature existed),
+    /// then to catalog order.
+    func orderedFeatures(for context: MenuContext) -> [Feature] {
         var remaining = Dictionary(uniqueKeysWithValues: Feature.all.map { ($0.id, $0) })
-        let saved = defaults.stringArray(forKey: orderKey) ?? []
+        let saved = defaults.stringArray(forKey: orderKey(for: context))
+            ?? defaults.stringArray(forKey: legacyOrderKey)
+            ?? []
         let ordered = saved.compactMap { remaining.removeValue(forKey: $0) }
         return ordered + Feature.all.filter { remaining[$0.id] != nil }
     }
 
-    func setOrder(_ features: [Feature]) {
-        defaults.set(features.map(\.id), forKey: orderKey)
+    func setOrder(_ features: [Feature], for context: MenuContext) {
+        defaults.set(features.map(\.id), forKey: orderKey(for: context))
     }
 
     /// Which click contexts (file, folder, multiple items, empty space)
@@ -49,7 +53,13 @@ final class FeatureStore {
         defaults.set(contexts.map(\.rawValue), forKey: contextsKey(for: feature))
     }
 
-    private let orderKey = "featureOrder"
+    /// Pre-per-context-era single global order key, read only as a fallback
+    /// for a context that's never been reordered on its own yet.
+    private let legacyOrderKey = "featureOrder"
+
+    private func orderKey(for context: MenuContext) -> String {
+        "featureOrder.\(context.rawValue)"
+    }
 
     private func key(for feature: Feature) -> String {
         "feature.\(feature.id).enabled"
