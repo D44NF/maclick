@@ -6,22 +6,24 @@ import os
 /// enabled, ordered features — including on empty-space clicks.
 ///
 /// There's no public API to add items to another app's menu, so this
-/// lets Finder's right-click go through normally first (so its selection
-/// updates the way it always does), watches for the moment its menu
-/// opens, dismisses that menu, and shows MacClick's own `NSMenu` at the
-/// same spot instead. Requires Accessibility access, requested on start.
+/// intercepts the right-click itself (via a `CGEventTap`) before Finder
+/// ever sees it, so Finder's own menu never has a chance to flash on
+/// screen. Finder's selection only updates for a click it actually
+/// receives, so when the click lands on an item that isn't already
+/// selected, a synthetic left-click reproduces the selection change a
+/// real right-click would have made, before MacClick's own `NSMenu` is
+/// shown at the same spot. Requires Accessibility access, requested on
+/// start.
 final class ContextMenuController {
     private let runner = FeatureActionRunner()
-    private var clickMonitor: Any?
-    private var finderMenuObserver: AXObserver?
-    private var lastRightClick: (location: NSPoint, time: CFAbsoluteTime)?
-    private var lastHandledClickTime: CFAbsoluteTime?
+    private let systemWideElement = AXUIElementCreateSystemWide()
+    private var eventTap: CFMachPort?
+    private var runLoopSource: CFRunLoopSource?
     private let logger = Logger(subsystem: "com.daanfenske.maclick", category: "contextMenu")
 
     func start() {
         requestAccessibilityPermission()
-        observeRightClicks()
-        observeFinderMenu(attempt: 1)
+        installEventTap()
     }
 
     private func requestAccessibilityPermission() {
@@ -30,96 +32,98 @@ final class ContextMenuController {
         logger.notice("Accessibility trusted: \(trusted)")
     }
 
-    private func observeRightClicks() {
-        clickMonitor = NSEvent.addGlobalMonitorForEvents(matching: .rightMouseDown) { [weak self] _ in
-            self?.logger.notice("Right-click observed at \(String(describing: NSEvent.mouseLocation))")
-            self?.lastRightClick = (NSEvent.mouseLocation, CFAbsoluteTimeGetCurrent())
+    private func installEventTap() {
+        let mask = CGEventMask(1 << CGEventType.rightMouseDown.rawValue)
+        guard let tap = CGEvent.tapCreate(
+            tap: .cgSessionEventTap,
+            place: .headInsertEventTap,
+            options: .defaultTap,
+            eventsOfInterest: mask,
+            callback: { _, type, event, refcon in
+                guard let refcon else { return Unmanaged.passRetained(event) }
+                return Unmanaged<ContextMenuController>.fromOpaque(refcon)
+                    .takeUnretainedValue()
+                    .handleRightMouseDown(type: type, event: event)
+            },
+            userInfo: Unmanaged.passUnretained(self).toOpaque()
+        ) else {
+            logger.error("Failed to create the right-click event tap; Accessibility access may be missing")
+            return
         }
-        logger.notice("Global right-click monitor installed: \(self.clickMonitor != nil)")
+        eventTap = tap
+        let source = CFMachPortCreateRunLoopSource(nil, tap, 0)
+        runLoopSource = source
+        CFRunLoopAddSource(CFRunLoopGetMain(), source, .commonModes)
+        CGEvent.tapEnable(tap: tap, enable: true)
+        logger.notice("Right-click event tap installed")
     }
 
-    /// AX cross-process observation can fail with kAXErrorCannotComplete
-    /// for a few seconds right after Accessibility access is granted, so
-    /// this retries a handful of times before giving up.
-    private func observeFinderMenu(attempt: Int) {
-        guard let finder = NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").first else {
-            logger.error("Finder isn't running; can't observe its menu")
-            return
+    /// macOS disables a tap that takes too long to respond, or after
+    /// certain user-input events; re-enabling it here is required, not
+    /// optional — without it, right-clicks would silently stop being
+    /// intercepted after the first disable.
+    private func handleRightMouseDown(type: CGEventType, event: CGEvent) -> Unmanaged<CGEvent>? {
+        if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+            if let eventTap { CGEvent.tapEnable(tap: eventTap, enable: true) }
+            return Unmanaged.passRetained(event)
         }
-        let pid = finder.processIdentifier
+        guard type == .rightMouseDown,
+              let finderPid = finderProcessIdentifier(),
+              let element = axElement(at: event.location),
+              belongsToFinder(element, pid: finderPid)
+        else { return Unmanaged.passRetained(event) }
 
-        let callback: AXObserverCallback = { _, element, _, refcon in
-            guard let refcon else { return }
-            Unmanaged<ContextMenuController>.fromOpaque(refcon).takeUnretainedValue().finderMenuOpened(element)
-        }
+        suppressFinderMenuAndShowOurs(clickedElement: element, at: event.location)
+        return nil
+    }
 
-        var observer: AXObserver?
-        let createResult = AXObserverCreate(pid, callback, &observer)
-        guard createResult == .success, let observer else {
-            logger.error("AXObserverCreate failed (attempt \(attempt)): \(createResult.rawValue)")
-            return
-        }
+    private func finderProcessIdentifier() -> pid_t? {
+        NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").first?.processIdentifier
+    }
 
-        let appElement = AXUIElementCreateApplication(pid)
-        let refcon = Unmanaged.passUnretained(self).toOpaque()
-        let addResult = AXObserverAddNotification(observer, appElement, kAXMenuOpenedNotification as CFString, refcon)
-        logger.notice("AXObserverAddNotification result (attempt \(attempt)): \(addResult.rawValue)")
+    private func axElement(at point: CGPoint) -> AXUIElement? {
+        var element: AXUIElement?
+        let result = AXUIElementCopyElementAtPosition(systemWideElement, Float(point.x), Float(point.y), &element)
+        return result == .success ? element : nil
+    }
 
-        guard addResult == .success else {
-            if attempt < 6 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                    self?.observeFinderMenu(attempt: attempt + 1)
-                }
+    private func belongsToFinder(_ element: AXUIElement, pid: pid_t) -> Bool {
+        var elementPid: pid_t = 0
+        AXUIElementGetPid(element, &elementPid)
+        return elementPid == pid
+    }
+
+    private func suppressFinderMenuAndShowOurs(clickedElement: AXUIElement, at point: CGPoint) {
+        if isElementSelected(clickedElement) {
+            presentCustomMenu(at: appKitPoint(from: point))
+        } else {
+            simulateSelectionClick(at: point) { [weak self] in
+                self?.presentCustomMenu(at: self?.appKitPoint(from: point) ?? .zero)
             }
-            return
-        }
-
-        CFRunLoopAddSource(CFRunLoopGetMain(), AXObserverGetRunLoopSource(observer), .defaultMode)
-        finderMenuObserver = observer
-    }
-
-    private func finderMenuOpened(_ menuElement: AXUIElement) {
-        logger.notice("Finder menu opened notification fired")
-        guard let click = lastRightClick, CFAbsoluteTimeGetCurrent() - click.time < 0.6 else {
-            logger.notice("No recent right-click recorded; ignoring")
-            return
-        }
-        guard isContextualMenu(menuElement) else {
-            logger.notice("Opened menu looks like the menu bar; ignoring")
-            return
-        }
-        // A single right-click can fire this notification several times
-        // (e.g. a submenu opening inside the menu); only act on it once.
-        guard click.time != lastHandledClickTime else { return }
-        lastHandledClickTime = click.time
-
-        dismissOpenMenu()
-
-        let clickLocation = click.location
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) { [weak self] in
-            self?.presentCustomMenu(at: clickLocation)
         }
     }
 
-    /// Finder's menu bar always opens flush with the top of the screen;
-    /// a contextual menu opens near the click. That difference is enough
-    /// to never touch the menu bar.
-    private func isContextualMenu(_ menuElement: AXUIElement) -> Bool {
-        var positionValue: AnyObject?
-        guard AXUIElementCopyAttributeValue(menuElement, kAXPositionAttribute as CFString, &positionValue) == .success,
-              let positionValue, CFGetTypeID(positionValue) == AXValueGetTypeID() else { return false }
-
-        var position = CGPoint.zero
-        AXValueGetValue(positionValue as! AXValue, .cgPoint, &position)
-
-        let screenHeight = NSScreen.main?.frame.height ?? 0
-        return position.y < screenHeight - 60
+    private func isElementSelected(_ element: AXUIElement) -> Bool {
+        var value: AnyObject?
+        guard AXUIElementCopyAttributeValue(element, kAXSelectedAttribute as CFString, &value) == .success else { return false }
+        return (value as? Bool) == true
     }
 
-    private func dismissOpenMenu() {
+    /// Right-clicking an item that isn't already selected replaces the
+    /// selection with just that item, same as a left click would — and
+    /// right-clicking empty space clears it. Since the real right-click
+    /// never reaches Finder, this reproduces that selection change with a
+    /// synthetic left-click before the custom menu reads the selection.
+    private func simulateSelectionClick(at point: CGPoint, completion: @escaping () -> Void) {
         let source = CGEventSource(stateID: .hidSystemState)
-        CGEvent(keyboardEventSource: source, virtualKey: 53, keyDown: true)?.post(tap: .cghidEventTap)
-        CGEvent(keyboardEventSource: source, virtualKey: 53, keyDown: false)?.post(tap: .cghidEventTap)
+        CGEvent(mouseEventSource: source, mouseType: .leftMouseDown, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
+        CGEvent(mouseEventSource: source, mouseType: .leftMouseUp, mouseCursorPosition: point, mouseButton: .left)?.post(tap: .cghidEventTap)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.03, execute: completion)
+    }
+
+    private func appKitPoint(from cgPoint: CGPoint) -> NSPoint {
+        let screenHeight = NSScreen.main?.frame.height ?? 0
+        return NSPoint(x: cgPoint.x, y: screenHeight - cgPoint.y)
     }
 
     private func presentCustomMenu(at screenLocation: NSPoint) {
@@ -137,20 +141,47 @@ final class ContextMenuController {
 
         let menu = NSMenu()
         for feature in applicable {
-            let item = NSMenuItem(title: feature.title, action: #selector(menuItemSelected(_:)), keyEquivalent: "")
-            item.target = self
-            item.representedObject = (feature, target)
+            let item = NSMenuItem(title: feature.title, action: nil, keyEquivalent: "")
+            if feature.id == Feature.tags.id {
+                item.submenu = tagsSubmenu(for: target)
+            } else {
+                item.action = #selector(menuItemSelected(_:))
+                item.target = self
+                item.representedObject = (feature, target)
+            }
             menu.addItem(item)
         }
 
         menu.popUp(positioning: nil, at: screenLocation, in: nil)
     }
 
+    private static let tagColors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Gray"]
+
+    private func tagsSubmenu(for target: ClickTarget) -> NSMenu {
+        let submenu = NSMenu()
+        for color in Self.tagColors {
+            let item = NSMenuItem(title: color, action: #selector(tagColorSelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = (color, target)
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
     @objc private func menuItemSelected(_ sender: NSMenuItem) {
         guard let (feature, target) = sender.representedObject as? (Feature, ClickTarget) else { return }
+        runner.run(feature, target: runnerTarget(for: target))
+    }
+
+    @objc private func tagColorSelected(_ sender: NSMenuItem) {
+        guard let (color, target) = sender.representedObject as? (String, ClickTarget) else { return }
+        runner.applyTag(color, target: runnerTarget(for: target))
+    }
+
+    private func runnerTarget(for target: ClickTarget) -> FeatureActionRunner.Target {
         switch target {
-        case .items(let urls): runner.run(feature, target: .items(urls))
-        case .emptySpace(let folder): runner.run(feature, target: .folder(folder))
+        case .items(let urls): return .items(urls)
+        case .emptySpace(let folder): return .folder(folder)
         }
     }
 
@@ -168,7 +199,7 @@ final class ContextMenuController {
                 set AppleScript's text item delimiters to linefeed
                 return "SEL:" & (thePaths as text)
             else
-                return "DIR:" & POSIX path of (target of front window as alias)
+                return "DIR:" & POSIX path of (insertion location as alias)
             end if
         end tell
         """
