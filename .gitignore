@@ -14,3 +14,6 @@ DerivedData/
 
 ## Personal signing config, see Config/Local.xcconfig.sample
 Config/Local.xcconfig
+
+## Local-only dev notes (project overview for you/AI agents), never pushed
+.local/
