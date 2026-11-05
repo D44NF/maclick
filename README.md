@@ -55,19 +55,27 @@ Want to build it yourself instead? See [Building](#building).
 - **Get Info** — opens Finder's own info window for the selection, or the current folder.
 - **Tags** — apply a color tag from a submenu, without leaving the menu.
 - **Quick Look** — preview the selection without opening it.
+- **Share…** — share the selection via AirDrop, Mail, Messages, and whatever else macOS offers.
+- **Customise Folder…** — opens Get Info, where you can drop on a custom folder icon.
+- **Quick Actions** — run an installed Automator Quick Action workflow on the selection, from its own submenu.
 
 ### Opening things
 - **Open / Open With** — open with the default app, or pick one from a submenu of everything that can.
+- **Open in New Tab** — opens a selected folder in a new tab of the current window.
 - **Open Terminal Here** — opens Terminal in the clicked (or current) folder.
 - **Open in Visual Studio Code** — same, for VS Code.
+- **Import from iPhone** — opens Image Capture to bring in photos from a nearby iPhone or iPad.
 
 ### Archives & checksums
 - **Compress to ZIP / Extract ZIP** — zip the selection, or unzip a single `.zip`.
 - **Copy SHA-256 / MD5 Checksum** — hashes a single file straight to the clipboard.
 
 ### Window & view
+- **View** — switch the current window between icons, list, columns, or gallery.
 - **Sort By** — rearrange the current window's icons by name, kind, date, size, or label.
 - **Clean Up** — snap icons back to the grid.
+- **Clean Up By** — snap icons to the grid, arranged by name, kind, size, or date.
+- **Use Groups** — toggle grouping the current window's icons on or off.
 - **Show View Options** — opens Finder's own View Options panel.
 
 ### Clipboard

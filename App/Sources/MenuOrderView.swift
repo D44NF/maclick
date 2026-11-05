@@ -78,9 +78,12 @@ struct MenuOrderView: View {
 private struct MenuPreviewView: View {
     let features: [Feature]
 
-    // shortcut: duplicates the 3 ids ContextMenuController's presentCustomMenu
-    // switches on for a submenu; update both if a 4th submenu feature is added.
-    private static let submenuFeatureIDs: Set<String> = [Feature.tags.id, Feature.openWith.id, Feature.sortBy.id]
+    // shortcut: duplicates the ids ContextMenuController's presentCustomMenu
+    // switches on for a submenu; update both if another submenu feature is added.
+    private static let submenuFeatureIDs: Set<String> = [
+        Feature.tags.id, Feature.openWith.id, Feature.sortBy.id,
+        Feature.viewAs.id, Feature.cleanUpBy.id, Feature.quickActions.id
+    ]
 
     var body: some View {
         Group {

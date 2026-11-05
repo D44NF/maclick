@@ -150,6 +150,12 @@ final class ContextMenuController {
                 item.submenu = openWithSubmenu(for: target)
             case Feature.sortBy.id:
                 item.submenu = sortBySubmenu()
+            case Feature.viewAs.id:
+                item.submenu = viewAsSubmenu()
+            case Feature.cleanUpBy.id:
+                item.submenu = cleanUpBySubmenu()
+            case Feature.quickActions.id:
+                item.submenu = quickActionsSubmenu(for: target)
             default:
                 item.action = #selector(menuItemSelected(_:))
                 item.target = self
@@ -221,6 +227,61 @@ final class ContextMenuController {
     @objc private func sortArrangementSelected(_ sender: NSMenuItem) {
         guard let arrangement = sender.representedObject as? FeatureActionRunner.SortArrangement else { return }
         runner.sortFrontmostWindow(by: arrangement)
+    }
+
+    private func viewAsSubmenu() -> NSMenu {
+        let submenu = NSMenu()
+        for mode in FeatureActionRunner.ViewMode.allCases {
+            let item = NSMenuItem(title: mode.title, action: #selector(viewModeSelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = mode
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
+    @objc private func viewModeSelected(_ sender: NSMenuItem) {
+        guard let mode = sender.representedObject as? FeatureActionRunner.ViewMode else { return }
+        runner.setView(mode)
+    }
+
+    private func cleanUpBySubmenu() -> NSMenu {
+        let submenu = NSMenu()
+        for property in FeatureActionRunner.CleanUpProperty.allCases {
+            let item = NSMenuItem(title: property.title, action: #selector(cleanUpPropertySelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = property
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
+    @objc private func cleanUpPropertySelected(_ sender: NSMenuItem) {
+        guard let property = sender.representedObject as? FeatureActionRunner.CleanUpProperty else { return }
+        runner.cleanUpFrontmostWindow(by: property)
+    }
+
+    private func quickActionsSubmenu(for target: ClickTarget) -> NSMenu {
+        let submenu = NSMenu()
+        let workflows = runner.quickActionWorkflows()
+        guard !workflows.isEmpty else {
+            let empty = NSMenuItem(title: "No Quick Actions installed", action: nil, keyEquivalent: "")
+            empty.isEnabled = false
+            submenu.addItem(empty)
+            return submenu
+        }
+        for workflow in workflows {
+            let item = NSMenuItem(title: workflow.title, action: #selector(quickActionSelected(_:)), keyEquivalent: "")
+            item.target = self
+            item.representedObject = (workflow, target)
+            submenu.addItem(item)
+        }
+        return submenu
+    }
+
+    @objc private func quickActionSelected(_ sender: NSMenuItem) {
+        guard let (workflow, target) = sender.representedObject as? (QuickActionCatalog.Workflow, ClickTarget) else { return }
+        runner.runQuickAction(workflow, target: runnerTarget(for: target))
     }
 
     private func runnerTarget(for target: ClickTarget) -> FeatureActionRunner.Target {

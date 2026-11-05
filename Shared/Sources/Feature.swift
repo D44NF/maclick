@@ -212,6 +212,70 @@ extension Feature {
         defaultContexts: [.singleFile, .singleFolder, .multipleItems, .emptySpace]
     )
 
+    static let openInNewTab = Feature(
+        id: "openInNewTab",
+        title: "Open in New Tab",
+        subtitle: "Select a single folder to open it in a new tab of the current window.",
+        symbolName: "macwindow.badge.plus",
+        defaultContexts: [.singleFolder]
+    )
+
+    static let viewAs = Feature(
+        id: "viewAs",
+        title: "View",
+        subtitle: "Switch this window between icons, list, columns, or gallery.",
+        symbolName: "square.grid.2x2",
+        defaultContexts: [.emptySpace]
+    )
+
+    static let cleanUpBy = Feature(
+        id: "cleanUpBy",
+        title: "Clean Up By",
+        subtitle: "Snap icons to the grid, arranged by name, kind, size, or date.",
+        symbolName: "square.grid.3x3.topleft.filled",
+        defaultContexts: [.emptySpace]
+    )
+
+    static let useGroups = Feature(
+        id: "useGroups",
+        title: "Use Groups",
+        subtitle: "Toggle grouping this window's icons on or off.",
+        symbolName: "rectangle.3.group",
+        defaultContexts: [.emptySpace]
+    )
+
+    static let share = Feature(
+        id: "share",
+        title: "Share…",
+        subtitle: "Share the selection via AirDrop, Mail, Messages, and more.",
+        symbolName: "square.and.arrow.up",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
+    static let customiseFolder = Feature(
+        id: "customiseFolder",
+        title: "Customise Folder…",
+        subtitle: "Opens Finder's Info window, where you can set a custom folder icon.",
+        symbolName: "folder.badge.gearshape",
+        defaultContexts: [.singleFolder]
+    )
+
+    static let importFromIPhone = Feature(
+        id: "importFromIPhone",
+        title: "Import from iPhone",
+        subtitle: "Opens Image Capture to bring in photos from a nearby iPhone or iPad.",
+        symbolName: "iphone.and.arrow.forward",
+        defaultContexts: [.singleFolder, .emptySpace]
+    )
+
+    static let quickActions = Feature(
+        id: "quickActions",
+        title: "Quick Actions",
+        subtitle: "Run an installed Automator Quick Action workflow on the selection.",
+        symbolName: "bolt",
+        defaultContexts: [.singleFile, .singleFolder, .multipleItems]
+    )
+
     /// Every feature MacClick currently offers, in default display order.
     static let all: [Feature] = [
         newTextFile, newFolder,
@@ -219,7 +283,8 @@ extension Feature {
         compressToZip, extractZip,
         openTerminalHere, openInVSCode,
         getInfo, rename, duplicate, moveToTrash, quickLook, tags,
-        open, openWith, makeAlias, newFolderWithSelection, moveTo,
-        copy, paste, sortBy, cleanUp, showViewOptions
+        open, openWith, openInNewTab, makeAlias, newFolderWithSelection, moveTo,
+        copy, paste, sortBy, cleanUp, cleanUpBy, useGroups, viewAs, showViewOptions,
+        share, customiseFolder, importFromIPhone, quickActions
     ]
 }
