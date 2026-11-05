@@ -34,6 +34,11 @@ struct FeatureActionRunner {
         case Feature.paste.id: paste(target)
         case Feature.cleanUp.id: cleanUp(target)
         case Feature.showViewOptions.id: showViewOptions(target)
+        case Feature.openInNewTab.id: openInNewTab(target)
+        case Feature.share.id: share(target)
+        case Feature.customiseFolder.id: customiseFolder(target)
+        case Feature.importFromIPhone.id: importFromIPhone()
+        case Feature.useGroups.id: toggleUseGroups()
         default: break
         }
     }
@@ -101,6 +106,112 @@ struct FeatureActionRunner {
     // By needs to work in those view modes too.
     func sortFrontmostWindow(by arrangement: SortArrangement) {
         runFinderScript("tell application \"Finder\" to set arrangement of icon view options of window 1 to \(arrangement.appleScriptLiteral)")
+    }
+
+    enum ViewMode: String, CaseIterable {
+        case icon, list, column, gallery
+
+        var title: String {
+            switch self {
+            case .icon: return "as Icons"
+            case .list: return "as List"
+            case .column: return "as Columns"
+            case .gallery: return "as Gallery"
+            }
+        }
+
+        /// Finder calls Gallery View "flow view" in its own scripting
+        /// dictionary (verified via `sdef Finder.app`).
+        fileprivate var appleScriptLiteral: String {
+            switch self {
+            case .icon: return "icon view"
+            case .list: return "list view"
+            case .column: return "column view"
+            case .gallery: return "flow view"
+            }
+        }
+    }
+
+    func setView(_ mode: ViewMode) {
+        runFinderScript("tell application \"Finder\" to set current view of window 1 to \(mode.appleScriptLiteral)")
+    }
+
+    /// Finder's `clean up ... by` command takes a bare item property
+    /// (verified via `sdef Finder.app`: the "by" parameter is a reference
+    /// to a property like `name`, `kind`, or `modification date`), unlike
+    /// Sort By's `arranged by <name>` enumeration literal.
+    enum CleanUpProperty: String, CaseIterable {
+        case name, kind, size, modificationDate, creationDate, labelIndex
+
+        var title: String {
+            switch self {
+            case .name: return "Name"
+            case .kind: return "Kind"
+            case .size: return "Size"
+            case .modificationDate: return "Date Modified"
+            case .creationDate: return "Date Created"
+            case .labelIndex: return "Label"
+            }
+        }
+
+        fileprivate var appleScriptLiteral: String {
+            switch self {
+            case .name: return "name"
+            case .kind: return "kind"
+            case .size: return "size"
+            case .modificationDate: return "modification date"
+            case .creationDate: return "creation date"
+            case .labelIndex: return "label index"
+            }
+        }
+    }
+
+    func cleanUpFrontmostWindow(by property: CleanUpProperty) {
+        runFinderScript("tell application \"Finder\" to clean up window 1 by \(property.appleScriptLiteral)")
+    }
+
+    /// Finder's "Use Groups" toggle has no AppleScript property — grouping
+    /// is menu-only — so this clicks the real View menu item via System
+    /// Events (verified live: it's a plain checkbox item, no submenu,
+    /// when a Finder window is frontmost).
+    //
+    // shortcut: the menu item title is hardcoded from this macOS version;
+    // if Apple renames it, the click fails with an AppleScript error
+    // (reported to the user, not a crash) instead of silently doing
+    // nothing. Upgrade if that happens.
+    private func toggleUseGroups() {
+        NSRunningApplication.runningApplications(withBundleIdentifier: "com.apple.finder").first?.activate(options: [])
+        let script = """
+        tell application "System Events"
+            tell process "Finder"
+                click menu item "Use Groups" of menu "View" of menu bar item "View" of menu bar 1
+            end tell
+        end tell
+        """
+        runFinderScript(script)
+    }
+
+    private let quickActionCatalog = QuickActionCatalog()
+
+    func quickActionWorkflows() -> [QuickActionCatalog.Workflow] {
+        quickActionCatalog.workflows()
+    }
+
+    func runQuickAction(_ workflow: QuickActionCatalog.Workflow, target: Target) {
+        let urls = items(target)
+        guard !urls.isEmpty else { return }
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/automator")
+        process.arguments = ["-i", "-", workflow.url.path]
+        let input = Pipe()
+        process.standardInput = input
+        do {
+            try process.run()
+            input.fileHandleForWriting.write(Data(urls.map(\.path).joined(separator: "\n").utf8))
+            input.fileHandleForWriting.closeFile()
+        } catch {
+            presentAlert("Couldn't run \"\(workflow.title)\": \(error.localizedDescription)")
+        }
     }
 
     private func items(_ target: Target) -> [URL] {
@@ -337,6 +448,43 @@ struct FeatureActionRunner {
         let keyUp = CGEvent(keyboardEventSource: source, virtualKey: 38, keyDown: false)
         keyUp?.flags = .maskCommand
         keyUp?.post(tap: .cghidEventTap)
+    }
+
+    // shortcut: Finder's AppleScript dictionary has no "open a new tab"
+    // command, so this reproduces the Cmd+T shortcut, then points the
+    // resulting tab at the target folder; the fixed delay is a race
+    // against Finder actually creating the tab. Upgrade if it ever fires
+    // before the tab exists.
+    private func openInNewTab(_ target: Target) {
+        guard let directory = folder(target) else { return }
+        let script = """
+        tell application "Finder"
+            activate
+            tell application "System Events" to keystroke "t" using command down
+            delay 0.3
+            set target of front Finder window to (\(finderAliasExpression(for: directory)))
+        end tell
+        """
+        runFinderScript(script)
+    }
+
+    private func share(_ target: Target) {
+        SharePresenter.show(items(target))
+    }
+
+    /// Finder's own "Customise Folder…" opens a private colour/icon
+    /// picker with no scriptable equivalent; the closest a third-party
+    /// app can offer is Get Info, whose icon well already lets you drag
+    /// or paste on a custom folder icon.
+    private func customiseFolder(_ target: Target) {
+        getInfo(target)
+    }
+
+    private func importFromIPhone() {
+        guard let imageCaptureURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Image_Capture") else {
+            return presentAlert("Image Capture isn't available.")
+        }
+        NSWorkspace.shared.open(imageCaptureURL)
     }
 
     private func finderAliasExpression(for url: URL) -> String {
