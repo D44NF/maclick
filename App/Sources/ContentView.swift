@@ -7,12 +7,14 @@ struct ContentView: View {
     private enum Tab: String, CaseIterable, Identifiable {
         case features = "Features"
         case menuOrder = "Menu Order"
+        case permissions = "Permissions"
         var id: String { rawValue }
     }
 
     @State private var tab: Tab = .features
     @State private var enabledFeatures: [String: Bool]
     @State private var featureContexts: [String: Set<MenuContext>]
+    @State private var showOnboarding = !Onboarding.hasCompleted
 
     private let store: FeatureStore
 
@@ -40,10 +42,20 @@ struct ContentView: View {
                 featuresList
             case .menuOrder:
                 MenuOrderView(store: store)
+            case .permissions:
+                PermissionsView()
             }
         }
-        .safeAreaInset(edge: .bottom) { ExtensionSettingsFooter() }
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: 0) {
+                AccessibilityReminderFooter()
+                ExtensionSettingsFooter()
+            }
+        }
         .frame(minWidth: 460, idealWidth: 560, maxWidth: 680, minHeight: 460, idealHeight: 680, maxHeight: 860)
+        .sheet(isPresented: $showOnboarding) {
+            OnboardingView(onFinish: { showOnboarding = false })
+        }
     }
 
     private var featuresList: some View {
