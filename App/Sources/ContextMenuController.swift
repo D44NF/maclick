@@ -21,9 +21,29 @@ final class ContextMenuController {
     private var runLoopSource: CFRunLoopSource?
     private let logger = Logger(subsystem: "com.daanfenske.maclick", category: "contextMenu")
 
+    private var hasInstalledRetryObserver = false
+
+    /// Safe to call more than once — the Permissions tab, the Accessibility
+    /// reminder footer, onboarding, and app launch can all reach this, and
+    /// none of them track whether an earlier call already succeeded.
     func start() {
         requestAccessibilityPermission()
         installEventTap()
+        observeActivationForRetry()
+    }
+
+    /// Granting Accessibility access in System Settings doesn't always
+    /// take effect instantly, so tapCreate can still fail right after the
+    /// user grants it. Retrying each time the app becomes active (e.g.
+    /// switching back from System Settings) picks that up without
+    /// requiring a relaunch.
+    private func observeActivationForRetry() {
+        guard !hasInstalledRetryObserver else { return }
+        hasInstalledRetryObserver = true
+        NotificationCenter.default.addObserver(forName: NSApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self, self.eventTap == nil, AXIsProcessTrusted() else { return }
+            self.installEventTap()
+        }
     }
 
     private func requestAccessibilityPermission() {
@@ -33,6 +53,7 @@ final class ContextMenuController {
     }
 
     private func installEventTap() {
+        guard eventTap == nil else { return }
         let mask = CGEventMask(1 << CGEventType.rightMouseDown.rawValue)
         guard let tap = CGEvent.tapCreate(
             tap: .cgSessionEventTap,
