@@ -20,7 +20,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// MacClick with no window open and no other way back to it.
     private func installStatusItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        item.button?.image = NSImage(systemSymbolName: "gearshape", accessibilityDescription: "MacClick Settings")
+        let icon = NSImage(systemSymbolName: "filemenu.and.cursorarrow", accessibilityDescription: "MacClick Settings")
+        icon?.isTemplate = true
+        item.button?.image = icon
 
         let menu = NSMenu()
         let settings = NSMenuItem(title: "Settings…", action: #selector(showSettings), keyEquivalent: ",")
