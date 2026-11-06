@@ -25,7 +25,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>12.0</string>
 	<key>LSUIElement</key>
-	<false/>
+	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.</string>
 	<key>NSHumanReadableCopyright</key>
