@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>MacClick</string>
+	<string>MaClick</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
-	<string>MacClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.</string>
+	<string>MaClick asks Finder which folder is open so actions like "New Text File Here" know where to create things when nothing is selected.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 Daan Fenske. GPL-3.0-or-later.</string>
 	<key>NSServices</key>

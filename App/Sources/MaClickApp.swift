@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct MacClickApp: App {
+struct MaClickApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {

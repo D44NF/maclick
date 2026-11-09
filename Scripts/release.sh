@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Builds MacClick (Release) and packages it into dist/MacClick-<version>.dmg.
+# Builds MaClick (Release) and packages it into dist/MaClick-<version>.dmg.
 #
 # Not signed with a paid Apple Developer ID and not notarized, so first-time
 # openers need to right-click > Open once (see the README's Install section).
@@ -7,24 +7,24 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-APP_NAME="MacClick"
+APP_NAME="MaClick"
 
 echo "▸ Regenerating the Xcode project…"
 xcodegen generate
 
 VERSION="$(sed -nE 's/.*MARKETING_VERSION: *"([^"]+)".*/\1/p' project.yml | head -1)"
 [[ -n "$VERSION" ]] || { echo "✗ Could not read MARKETING_VERSION from project.yml" >&2; exit 1; }
-echo "▸ Building MacClick $VERSION (Release)…"
+echo "▸ Building MaClick $VERSION (Release)…"
 
 rm -rf dist
 mkdir -p dist
 
 xcodebuild build \
-    -project MacClick.xcodeproj \
+    -project MaClick.xcodeproj \
     -target "$APP_NAME" \
     -configuration Release
 
-BUILT_PRODUCTS_DIR="$(xcodebuild -project MacClick.xcodeproj -target "$APP_NAME" -configuration Release -showBuildSettings 2>/dev/null | awk -F'= ' '/ BUILT_PRODUCTS_DIR/{print $2; exit}')"
+BUILT_PRODUCTS_DIR="$(xcodebuild -project MaClick.xcodeproj -target "$APP_NAME" -configuration Release -showBuildSettings 2>/dev/null | awk -F'= ' '/ BUILT_PRODUCTS_DIR/{print $2; exit}')"
 APP="$BUILT_PRODUCTS_DIR/$APP_NAME.app"
 [[ -d "$APP" ]] || { echo "✗ $APP not found after build" >&2; exit 1; }
 

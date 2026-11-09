@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/assets/readme/logo.png" width="180" alt="MacClick logo">
+  <img src="docs/assets/readme/logo.png" width="180" alt="MaClick logo">
 </p>
 
-<h1 align="center">MacClick</h1>
+<h1 align="center">MaClick</h1>
 
 <p align="center">
   The Windows-style right-click menu macOS Finder never had —<br>
@@ -26,16 +26,16 @@
 </p>
 
 <p align="center">
-  <img src="docs/assets/readme/settings-screenshot.png" width="520" alt="MacClick's settings window, listing every action with a toggle, drag handle, and per-context chips">
+  <img src="docs/assets/readme/settings-screenshot.png" width="520" alt="MaClick's settings window, listing every action with a toggle, drag handle, and per-context chips">
 </p>
 
 Right-click a file, a folder, or empty space in Finder and get a menu built from exactly the actions you picked — classic Finder actions like Get Info, Rename, Duplicate, and Move to Trash, alongside things Finder never offered: Copy Path, checksums, Open Terminal Here, Open in VS Code, and more. Every action can be switched on or off, reordered, and scoped to the contexts where it makes sense — a single file, a folder, multiple items, or empty space — all from one settings window.
 
 ## Install
 
-Grab the latest `.dmg` from [Releases](https://github.com/D44NF/maclick/releases/latest), open it, and drag MacClick into Applications.
+Grab the latest `.dmg` from [Releases](https://github.com/D44NF/maclick/releases/latest), open it, and drag MaClick into Applications.
 
-MacClick isn't signed with a paid Apple Developer ID, so macOS will say it "cannot be opened because the developer cannot be verified" the first time you launch it. Right-click (or Control-click) MacClick in Applications, choose **Open**, then confirm — you only need to do this once per version. After updating to a new release, you'll likely need to repeat this (and re-grant Accessibility access in System Settings), since each build's signature changes without a paid developer account.
+MaClick isn't signed with a paid Apple Developer ID, so macOS will say it "cannot be opened because the developer cannot be verified" the first time you launch it. Right-click (or Control-click) MaClick in Applications, choose **Open**, then confirm — you only need to do this once per version. After updating to a new release, you'll likely need to repeat this (and re-grant Accessibility access in System Settings), since each build's signature changes without a paid developer account.
 
 Want to build it yourself instead? See [Building](#building).
 
@@ -88,14 +88,14 @@ See [`Shared/Sources/Feature.swift`](Shared/Sources/Feature.swift) for the defin
 Toggle any action on or off, drag to reorder, and decide exactly where each one shows up: a single file, a single folder, multiple selected items, empty space — any combination. Turn off "Copy Path" for empty-space clicks but keep it for files. Hide checksum actions everywhere except on single files. The defaults match how Finder behaves out of the box; nothing changes until you touch it.
 
 <p align="center">
-  <img src="docs/assets/readme/context-menu-selection.png" width="260" alt="MacClick's custom context menu for a selected file">
-  <img src="docs/assets/readme/context-menu-empty-space.png" width="260" alt="MacClick's custom context menu for an empty-space click">
+  <img src="docs/assets/readme/context-menu-selection.png" width="260" alt="MaClick's custom context menu for a selected file">
+  <img src="docs/assets/readme/context-menu-empty-space.png" width="260" alt="MaClick's custom context menu for an empty-space click">
 </p>
 <p align="center"><sub>The same menu on a selected file, and on empty space — each action shows only where you told it to.</sub></p>
 
 ## How it works
 
-There's no public API for adding items to another app's contextual menu, so MacClick intercepts the right-click itself — via a `CGEventTap`, before Finder ever receives it — and shows its own menu at the same spot instead. If the click lands on an item that isn't already selected, MacClick reproduces Finder's own selection behavior with a synthetic click first (and leaves an existing multi-selection alone, exactly like a real right-click would). It's built the way Apple would build it otherwise: a native SwiftUI settings app, no private APIs, no process injection.
+There's no public API for adding items to another app's contextual menu, so MaClick intercepts the right-click itself — via a `CGEventTap`, before Finder ever receives it — and shows its own menu at the same spot instead. If the click lands on an item that isn't already selected, MaClick reproduces Finder's own selection behavior with a synthetic click first (and leaves an existing multi-selection alone, exactly like a real right-click would). It's built the way Apple would build it otherwise: a native SwiftUI settings app, no private APIs, no process injection.
 
 A `FIFinderSync` Finder Sync extension ships alongside it, ready for the day Apple fixes a platform bug that currently keeps that officially-sanctioned mechanism from running at all; a classic Services-menu fallback also exists for actual selections. Either way, the custom menu above is what you'll actually use day to day.
 
@@ -103,7 +103,7 @@ A `FIFinderSync` Finder Sync extension ships alongside it, ready for the day App
 
 Prebuilt `.dmg` downloads are available from [Releases](#install) — this section is for building from source instead.
 
-`MacClick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen) and isn't committed — a generated project file can bake in locally selected signing settings, which must never end up in this public repo.
+`MaClick.xcodeproj` is generated from `project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen) and isn't committed — a generated project file can bake in locally selected signing settings, which must never end up in this public repo.
 
 Before the first build:
 
@@ -120,14 +120,14 @@ Before the first build:
 ```sh
 brew install xcodegen   # once
 xcodegen generate
-open MacClick.xcodeproj
+open MaClick.xcodeproj
 ```
 
 Run `xcodegen generate` again any time `project.yml` or the source file layout changes (for example after pulling new commits).
 
 ### Enabling the right-click menu
 
-Finder Sync extensions are never launched directly, and the custom menu needs Accessibility access. After building and running `MacClick.app` once:
+Finder Sync extensions are never launched directly, and the custom menu needs Accessibility access. After building and running `MaClick.app` once:
 
 1. Grant Accessibility access when prompted (**System Settings → Privacy & Security → Accessibility**).
 2. Right-click a file, folder, or empty space in a Finder window to see your enabled actions.
@@ -136,9 +136,9 @@ If you also want the dormant Finder Sync extension enabled for when Apple fixes 
 
 ## Privacy
 
-MacClick is local-first: no account, no analytics, no telemetry, no network access at all. Reading your selection, moving files, computing a checksum, opening another app — all of it happens on your Mac, through AppleScript calls to Finder or direct file operations.
+MaClick is local-first: no account, no analytics, no telemetry, no network access at all. Reading your selection, moving files, computing a checksum, opening another app — all of it happens on your Mac, through AppleScript calls to Finder or direct file operations.
 
-Accessibility access is what makes the custom menu possible at all (intercepting Finder's right-click requires it), and it's a broad permission: in principle it lets any app watch and simulate input system-wide, not just within Finder. MacClick only uses it the way this README describes, and the app isn't sandboxed — this is a meaningful amount of trust to grant, worth knowing before you flip that switch in System Settings.
+Accessibility access is what makes the custom menu possible at all (intercepting Finder's right-click requires it), and it's a broad permission: in principle it lets any app watch and simulate input system-wide, not just within Finder. MaClick only uses it the way this README describes, and the app isn't sandboxed — this is a meaningful amount of trust to grant, worth knowing before you flip that switch in System Settings.
 
 ## License
 

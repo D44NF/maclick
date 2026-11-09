@@ -1,5 +1,5 @@
 import XCTest
-@testable import MacClick
+@testable import MaClick
 
 final class QuickActionCatalogTests: XCTestCase {
     private var directory: URL!

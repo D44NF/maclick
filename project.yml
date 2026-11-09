@@ -1,4 +1,4 @@
-name: MacClick
+name: MaClick
 options:
   bundleIdPrefix: com.daanfenske.maclick
   deploymentTarget:
@@ -20,7 +20,7 @@ settings:
     CODE_SIGN_STYLE: Automatic
 
 targets:
-  MacClick:
+  MaClick:
     type: application
     platform: macOS
     sources:
@@ -31,14 +31,14 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick
-        CODE_SIGN_ENTITLEMENTS: App/Resources/MacClick.entitlements
+        CODE_SIGN_ENTITLEMENTS: App/Resources/MaClick.entitlements
         ENABLE_HARDENED_RUNTIME: true
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         COMBINE_HIDPI_IMAGES: true
     info:
       path: App/Resources/Info.plist
       properties:
-        CFBundleDisplayName: MacClick
+        CFBundleDisplayName: MaClick
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSMinimumSystemVersion: "12.0"
@@ -101,11 +101,11 @@ targets:
             NSRequiredContext:
               NSApplicationIdentifier: com.apple.finder
     dependencies:
-      - target: MacClickFinderSync
+      - target: MaClickFinderSync
         embed: true
         codeSign: true
 
-  MacClickFinderSync:
+  MaClickFinderSync:
     type: app-extension
     platform: macOS
     sources:
@@ -121,14 +121,14 @@ targets:
     info:
       path: FinderSync/Resources/Info.plist
       properties:
-        CFBundleDisplayName: MacClick FinderSync
+        CFBundleDisplayName: MaClick FinderSync
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.FinderSync
           NSExtensionPrincipalClass: FinderSyncController
 
-  MacClickTests:
+  MaClickTests:
     type: bundle.unit-test
     platform: macOS
     sources:
@@ -138,17 +138,17 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.daanfenske.maclick.Tests
         GENERATE_INFOPLIST_FILE: true
     dependencies:
-      - target: MacClick
+      - target: MaClick
 
 schemes:
-  MacClick:
+  MaClick:
     build:
       targets:
-        MacClick: all
-        MacClickFinderSync: all
-        MacClickTests: all
+        MaClick: all
+        MaClickFinderSync: all
+        MaClickTests: all
     test:
       targets:
-        - MacClickTests
+        - MaClickTests
     run:
       config: Debug

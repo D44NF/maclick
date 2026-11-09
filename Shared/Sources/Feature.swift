@@ -276,7 +276,7 @@ extension Feature {
         defaultContexts: [.singleFile, .singleFolder, .multipleItems]
     )
 
-    /// Every feature MacClick currently offers, in default display order.
+    /// Every feature MaClick currently offers, in default display order.
     static let all: [Feature] = [
         newTextFile, newFolder,
         copyPath, copySHA256Checksum, copyMD5Checksum,
