@@ -2,7 +2,7 @@ import SwiftUI
 import AppKit
 import ApplicationServices
 
-/// Every system permission or capability MacClick uses, in one place:
+/// Every system permission or capability MaClick uses, in one place:
 /// Accessibility (what the custom menu needs), Launch at Login, and the
 /// dormant Finder Sync extension.
 struct PermissionsView: View {
@@ -25,7 +25,7 @@ struct PermissionsView: View {
                 Toggle(isOn: launchAtLoginBinding) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Launch at Login")
-                        Text(LoginItem.isSupported ? "Start MacClick automatically when you log in." : "Requires macOS 13 or later.")
+                        Text(LoginItem.isSupported ? "Start MaClick automatically when you log in." : "Requires macOS 13 or later.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

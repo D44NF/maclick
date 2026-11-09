@@ -1,7 +1,7 @@
 import Foundation
 
 /// Reads and writes which features are enabled. Backed by the App Group
-/// shared between MacClick.app and the Finder Sync extension, so a toggle
+/// shared between MaClick.app and the Finder Sync extension, so a toggle
 /// in the app is visible to the extension immediately.
 final class FeatureStore {
     static let shared = FeatureStore()

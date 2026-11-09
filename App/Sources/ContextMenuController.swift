@@ -11,7 +11,7 @@ import os
 /// screen. Finder's selection only updates for a click it actually
 /// receives, so when the click lands on an item that isn't already
 /// selected, a synthetic left-click reproduces the selection change a
-/// real right-click would have made, before MacClick's own `NSMenu` is
+/// real right-click would have made, before MaClick's own `NSMenu` is
 /// shown at the same spot. Requires Accessibility access, requested on
 /// start.
 final class ContextMenuController {

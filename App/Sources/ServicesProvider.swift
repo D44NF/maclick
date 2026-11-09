@@ -1,6 +1,6 @@
 import Cocoa
 
-/// Exposes MacClick's actions through the classic Services menu
+/// Exposes MaClick's actions through the classic Services menu
 /// (Finder → right-click → Services), which still works while Finder
 /// Sync's own menu callback is broken on this OS (see
 /// `FinderSyncController`). Each method name matches an `NSMessage`
@@ -171,6 +171,6 @@ final class ServicesProvider: NSObject {
     }
 
     private func disabled(_ error: AutoreleasingUnsafeMutablePointer<NSString?>) {
-        fail("This action is turned off in MacClick. Enable it in the app to use it.", error)
+        fail("This action is turned off in MaClick. Enable it in the app to use it.", error)
     }
 }

@@ -1,5 +1,5 @@
 import XCTest
-@testable import MacClick
+@testable import MaClick
 
 final class MenuApplicabilityTests: XCTestCase {
     private let folder = ClickTarget.emptySpace(folder: URL(fileURLWithPath: "/tmp"))

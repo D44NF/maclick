@@ -1,6 +1,6 @@
 import ServiceManagement
 
-/// Registers MacClick to launch at login, via the modern login-item API.
+/// Registers MaClick to launch at login, via the modern login-item API.
 // shortcut: SMAppService.mainApp needs macOS 13+; on macOS 12 isSupported
 // is false and the Permissions tab just disables the toggle. Upgrade with
 // a legacy SMLoginItemSetEnabled helper target if macOS 12 support matters.

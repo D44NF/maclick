@@ -10,7 +10,7 @@ enum Onboarding {
     }
 }
 
-/// Shown once, the first time MacClick launches: explains what it does
+/// Shown once, the first time MaClick launches: explains what it does
 /// and how, then grants the Accessibility access the custom menu needs —
 /// deferred until here instead of prompting for it before the user has
 /// any idea why.
@@ -20,7 +20,7 @@ struct OnboardingView: View {
 
         var title: String {
             switch self {
-            case .welcome: return "Welcome to MacClick"
+            case .welcome: return "Welcome to MaClick"
             case .howItWorks: return "How it works"
             case .customize: return "Customize everything"
             case .permission: return "One permission to grant"
@@ -39,13 +39,13 @@ struct OnboardingView: View {
         var body: String {
             switch self {
             case .welcome:
-                return "MacClick replaces Finder's right-click menu with one you fully control — every action can be switched on or off, reordered, and scoped to exactly the contexts where it makes sense."
+                return "MaClick replaces Finder's right-click menu with one you fully control — every action can be switched on or off, reordered, and scoped to exactly the contexts where it makes sense."
             case .howItWorks:
-                return "There's no public way to add items to Finder's own menu, so MacClick intercepts your right-click before Finder sees it, and shows its own menu at the same spot instead. Everything happens locally — no account, no analytics, no network access at all."
+                return "There's no public way to add items to Finder's own menu, so MaClick intercepts your right-click before Finder sees it, and shows its own menu at the same spot instead. Everything happens locally — no account, no analytics, no network access at all."
             case .customize:
                 return "Use the Features tab to turn actions on or off, and Menu Order to drag them into the order you want — separately for files, folders, multiple selections, and empty space. Nothing changes until you touch it."
             case .permission:
-                return "Intercepting your right-click requires Accessibility access — that's what makes the custom menu possible. MacClick only uses it the way this tutorial just described."
+                return "Intercepting your right-click requires Accessibility access — that's what makes the custom menu possible. MaClick only uses it the way this tutorial just described."
             }
         }
     }
