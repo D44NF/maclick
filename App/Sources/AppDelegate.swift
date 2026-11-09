@@ -39,7 +39,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     /// MaClick with no window open and no other way back to it.
     private func installStatusItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-        let icon = NSImage(systemSymbolName: "filemenu.and.cursorarrow", accessibilityDescription: "MaClick Settings")
+        let icon = NSImage(systemSymbolName: "filemenu.and.cursorarrow", accessibilityDescription: "MacClick Settings")
         icon?.isTemplate = true
         item.button?.image = icon
 
